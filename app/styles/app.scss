@@ -1,0 +1,34 @@
+HTML {
+}
+
+BODY {
+  background-color: red;
+  margin: 0;
+  padding: 0;
+}
+
+.wrap {
+  display: grid;
+  width: 100%;
+  min-height: 100vh;
+  grid-template-areas:
+    "head head"
+    "nav  main";
+  grid-template-rows: 80px auto;
+  grid-template-columns: 250px auto;
+}
+
+HEADER {
+  grid-area: head;
+  background-color: #cfc;
+}
+
+NAV {
+  grid-area: nav;
+  background-color: #ccf;
+}
+
+MAIN {
+  grid-area: main;
+  background-color: #ccc;
+}

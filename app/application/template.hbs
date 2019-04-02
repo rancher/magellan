@@ -1,0 +1,46 @@
+<div class="wrap">
+  <header>
+    Header
+  </header>
+  <nav>
+    <p>
+      Group:
+      {{#if (eq navGroup "none")}}
+        <b>None</b>
+        <a href="#" {{action "setNavGroup" "group"}}>By API</a>
+      {{else}}
+        <a href="#" {{action "setNavGroup" "none"}}>None</a>
+        <b>By API</b>
+      {{/if}}
+    </p>
+
+    {{#if (eq navGroup "none")}}
+      <ul class="list-unstyled">
+        {{#each model.resources as |r|}}
+          <li>
+            {{#link-to "group.resource-list" r.group r.groupVersion r.name}}
+              {{r.name}}
+            {{/link-to}}
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      {{#each grouped as |g|}}
+        <p>{{g.group}}</p>
+        <ul class="list-unstyled">
+          {{#each g.resources as |r|}}
+            <li>
+              {{#link-to "group.resource-list" g.group r.groupVersion r.name}}
+                {{r.name}}
+              {{/link-to}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/each}}
+    {{/if}}
+
+  </nav>
+  <main>
+    {{outlet}}
+  </main>
+</div>
