@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@rancher/ember-cookies": "^0.4.0",
-    "@rancher/ember-shared": "0.0.1",
+    "@rancher/ember-shared": "0.0.2",
     "buffer": "^5.2.1",
     "ember-cli-head": "^0.4.1",
     "ember-fetch": "^6.5.0",
