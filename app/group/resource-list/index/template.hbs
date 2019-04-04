@@ -2,8 +2,8 @@
   <thead>
     <tr>
       <th>Name</th>
-      {{#if isAllNamespaces}}
-        Namespace
+      {{#if showNamespace}}
+        <th>Namespace</th>
       {{/if}}
       <th>Created</th>
     </tr>
@@ -16,7 +16,7 @@
             {{row.metadata.name}}
           {{/link-to}}
         </td>
-        {{#if isAllNamespaces}}
+        {{#if showNamespace}}
           <td>
             <a href="#" {{action "switchNamespace" row.metadata.namespace}}>{{row.metadata.namespace}}</a>
           </td>

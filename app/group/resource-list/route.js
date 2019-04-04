@@ -14,7 +14,9 @@ export default Route.extend({
     const ns = get(this, 'namespaces.current');
 
     let url = resource.basePath;
+    let isAllNamespaces = true;
     if ( resource.namespaced && ns ) {
+      isAllNamespaces = false,
       url = addQueryParam(url, 'fieldSelector', `metadata.namespace=${ ns }`);
     }
 
@@ -22,6 +24,7 @@ export default Route.extend({
 
     return {
       resource,
+      isAllNamespaces,
       body: res,
     };
   },
