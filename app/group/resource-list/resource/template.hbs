@@ -1,2 +1,6 @@
-<h1>{{model.body.metadata.name}}</h1>
-{{to-json model.body}}
+{{resource-header resource=model.resource overrideNamespace=""}}
+<main>
+  <h1>{{model.body.metadata.name}}</h1>
+  {{to-json model.body}}
+</main>
+

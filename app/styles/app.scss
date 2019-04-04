@@ -1,10 +1,11 @@
 HTML {
-  --light: #92C8E8;
+  --light: #92c8e8;
   --medium: #7086f1;
   --muted: #666;
   --dark: #192466;
   --darker: #121258;
   --dark-contrast: white;
+  --selected: #f8d14e;
 }
 
 BODY {
@@ -55,6 +56,10 @@ NAV {
     margin: 0 10px 10px 10px;
     padding: 5px;
     list-style-type: none;
+  }
+
+  LI.active {
+    background-color: var(--selected);
   }
 
   &.grouped UL {

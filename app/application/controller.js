@@ -5,7 +5,8 @@ import { get, set, computed } from '@ember/object';
 import { COOKIE } from 'magellan/utils/constants';
 
 export default Controller.extend({
-  cookies: service(),
+  cookies:    service(),
+  namespaces: service(),
 
   navGroup: null,
 
