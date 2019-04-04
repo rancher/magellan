@@ -14,7 +14,7 @@ export default Route.extend({
     const ns = get(this, 'namespaces.current');
 
     let url = resource.basePath;
-    if ( ns ) {
+    if ( resource.namespaced && ns ) {
       url = addQueryParam(url, 'fieldSelector', `metadata.namespace=${ ns }`);
     }
 
