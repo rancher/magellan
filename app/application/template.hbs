@@ -1,46 +1,46 @@
-<div class="wrap">
-  <header>
-    Header
-  </header>
-  <nav>
-    <p>
-      Group:
-      {{#if (eq navGroup "none")}}
-        <b>None</b>
-        <a href="#" {{action "setNavGroup" "group"}}>By API</a>
-      {{else}}
-        <a href="#" {{action "setNavGroup" "none"}}>None</a>
-        <b>By API</b>
-      {{/if}}
-    </p>
+<nav class="left {{if (eq navGroup "group") "grouped"}}">
+  <div class="logo"/>
+  <p style="text-align: center">
+    {{#if (eq navGroup "group")}}
+      <a href="#" {{action "setNavGroup" "none"}}>By Name</a>
+      &nbsp;|&nbsp;
+      <b>By API Group</b>
+    {{else}}
+      <b>By Name</b>
+      &nbsp;|&nbsp;
+      <a href="#" {{action "setNavGroup" "group"}}>By API Group</a>
+    {{/if}}
+  </p>
 
-    {{#if (eq navGroup "none")}}
+  {{#if (eq navGroup "group")}}
+    {{#each grouped as |g|}}
+      <label>{{display-group g.group}}</label>
       <ul class="list-unstyled">
-        {{#each model.resources as |r|}}
+        {{#each g.resources as |r|}}
           <li>
-            {{#link-to "group.resource-list" r.group r.groupVersion r.name}}
-              {{r.name}}
+            {{#link-to "group.resource-list" g.group r.groupVersion r.name activeParent="LI" disabled=(not r.canList)}}
+              {{r.kind}}
             {{/link-to}}
           </li>
         {{/each}}
       </ul>
-    {{else}}
-      {{#each grouped as |g|}}
-        <p>{{g.group}}</p>
-        <ul class="list-unstyled">
-          {{#each g.resources as |r|}}
-            <li>
-              {{#link-to "group.resource-list" g.group r.groupVersion r.name}}
-                {{r.name}}
-              {{/link-to}}
-            </li>
-          {{/each}}
-        </ul>
+    {{/each}}
+  {{else}}
+    <ul class="list-unstyled">
+      {{#each flat as |r|}}
+        <li>
+          {{#link-to "group.resource-list" r.resource.group r.resource.groupVersion r.resource.name activeParent="LI" disabled=(not r.canList)}}
+            {{r.resource.kind}}
+          {{/link-to}}
+          {{#if r.duplicate}}
+            <span class="text-muted"> ({{display-group r.resource.group}})</span>
+          {{/if}}
+        </li>
       {{/each}}
-    {{/if}}
+    </ul>
+  {{/if}}
+</nav>
 
-  </nav>
-  <main>
-    {{outlet}}
-  </main>
+<div class="right">
+  {{outlet}}
 </div>

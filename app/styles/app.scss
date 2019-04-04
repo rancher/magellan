@@ -1,34 +1,113 @@
 HTML {
+  --light: #92C8E8;
+  --medium: #7086f1;
+  --muted: #666;
+  --dark: #192466;
+  --darker: #121258;
+  --dark-contrast: white;
 }
 
 BODY {
-  background-color: red;
   margin: 0;
   padding: 0;
+  position: relative;
+  background-color: var(--light);
 }
 
-.wrap {
-  display: grid;
+BODY>.ember-view {
   width: 100%;
   min-height: 100vh;
-  grid-template-areas:
-    "head head"
-    "nav  main";
-  grid-template-rows: 80px auto;
+  display: grid;
+  grid-template-areas: "left right";
   grid-template-columns: 250px auto;
-}
 
-HEADER {
-  grid-area: head;
-  background-color: #cfc;
+  .left {
+    grid-area: left;
+  }
+
+  .right {
+    grid-area: right;
+  }
 }
 
 NAV {
-  grid-area: nav;
-  background-color: #ccf;
+  background-color: var(--medium);
+
+  .logo {
+    display: block;
+    margin: 10px 0;
+    height: 50px;
+    width: 100%;
+    background: url('/assets/images/science-cow.svg') center center no-repeat;
+  }
+
+  LABEL {
+    display: block;
+    margin: 0 10px;
+    padding: 5px;
+    color: var(--dark-contrast);
+    background-color: var(--dark);
+    border: 1px solid var(--dark);
+    border-bottom: 0;
+  }
+
+  UL {
+    margin: 0 10px 10px 10px;
+    padding: 5px;
+    list-style-type: none;
+  }
+
+  &.grouped UL {
+   border: 1px solid var(--dark);
+   background-color: var(--light);
+ }
 }
 
 MAIN {
-  grid-area: main;
-  background-color: #ccc;
+  padding: 10px;
+}
+
+HEADER {
+  display: grid;
+  grid-template-areas: "left middle right";
+  grid-template-columns: auto auto auto;
+  grid-template-rows: 70px;
+
+  background-color: var(--darker);
+  color: var(--dark-contrast);
+
+  .left {
+    grid-area: left;
+    padding: 10px;
+  }
+
+  .middle {
+    grid-area: middle;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .right {
+    grid-area: right;
+    padding: 10px;
+    text-align: right;
+  }
+
+  H1 {
+    font-size: 1.5em;
+    margin: 0;
+    padding: 0;
+  }
+
+  H2 {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    color: var(--muted);
+  }
+}
+
+.text-muted {
+  color: var(--muted);
 }

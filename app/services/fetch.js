@@ -31,7 +31,6 @@ export default Service.extend({
   request(url, opt) {
     const shoebox = get(this, 'fastboot.shoebox');
 
-    console.log('REQUEST', url, opt);
     if ( arguments.length === 1 ) {
       if ( typeof url === 'object' ) {
         opt = url;
@@ -201,12 +200,12 @@ export default Service.extend({
       }
     }
 
-    const out = _nativeFetch(opt.url, opt);
+    const promise = _nativeFetch(opt.url, opt);
 
     if ( fastboot && fastboot.isFastBoot ) {
       const method = opt.method || 'GET';
 
-      return out.then((res) => {
+      return promise.then((res) => {
         copyCookies(res, cookieSvc);
         console.log('[Fastboot Fetch]', method, opt.url, res.status);
 
@@ -218,7 +217,7 @@ export default Service.extend({
         return reject(err);
       });
     } else {
-      return out.then(done);
+      return promise.then(done);
     }
   },
 });

@@ -1,0 +1,30 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      {{#if isAllNamespaces}}
+        Namespace
+      {{/if}}
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model.body.items as |row|}}
+      <tr>
+        <td>
+          {{#link-to "group.resource-list.resource" model.resource.group model.resource.groupVersion model.resource.name row.metadata.name}}
+            {{row.metadata.name}}
+          {{/link-to}}
+        </td>
+        {{#if isAllNamespaces}}
+          <td>
+            <a href="#" {{action "switchNamespace" row.metadata.namespace}}>{{row.metadata.namespace}}</a>
+          </td>
+        {{/if}}
+        <td>
+          {{row.metadata.creationTimestamp}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

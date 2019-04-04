@@ -1,13 +1,16 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
-import { get } from '@ember/object'
+import { get, set } from '@ember/object'
+
+import { eachLimit } from '@rancher/ember-shared/utils/promise-limit';
 
 import { compare } from 'magellan/utils/parse-k8s-version';
-import { eachLimit } from '@rancher/ember-shared/utils/promise-limit';
+import Resource from 'magellan/models/resource';
+import Namespace from 'magellan/models/namespace';
 
 export default Route.extend({
   fetch:      service(),
+  namespaces: service(),
 
   async model() {
     const fetch = get(this, 'fetch');
@@ -17,7 +20,7 @@ export default Route.extend({
     const resources = [];
 
     roots.paths.forEach((path) => {
-      let [base, group, version] = path.replace(/^\/+/,'').split('/');
+      let [base, group, version] = path.replace(/^\/+/, '').split('/');
 
       if ( base === 'api' ) {
         versions[base] = group;
@@ -35,8 +38,6 @@ export default Route.extend({
       }
     });
 
-    console.log('LOADING', paths, versions);
-
     await eachLimit(Object.keys(paths), 4, (group) => {
       return fetch.request(paths[group]).then((result) => {
         result.resources.forEach((res) => {
@@ -45,17 +46,27 @@ export default Route.extend({
             return;
           }
 
-          res.basePath = paths[group];
+          res.basePath = `${ paths[group] }/${ res.name }`
+          if ( res.namespaced ) {
+            res.namespacedPath = `${ paths[group] }/namespaces/%NAMESPACE%/${ res.name }`;
+          }
           res.group = group;
           res.groupVersion = versions[group];
-          resources.push(res);
+          resources.push(Resource.create(res));
         });
       });
     });
 
     const str = await fetch.request('/openapi/v2');
     const schemas = JSON.parse(str);
+
     delete schemas.paths;
+
+    const namespaceResource = resources.filterBy('name','namespaces').filterBy('group','api')[0];
+    const list = await fetch.request(namespaceResource.basePath);
+    const namespaces = list.items.map(x => Namespace.create(x));
+
+    set(this, 'namespaces.all', namespaces);
 
     return {
       resources: resources.sortBy('name'),

@@ -10,8 +10,26 @@ export default Controller.extend({
   navGroup: null,
 
   init() {
-    set(this, 'navGroup', get(this, 'cookies').read(COOKIE.NAV_GROUP, {raw: true}) || 'none');
+    this._super(...arguments);
+    set(this, 'navGroup', get(this, 'cookies').read(COOKIE.NAV_GROUP, { raw: true }) || 'group');
   },
+
+  flat: computed('model.resources.[]', function() {
+    const count = {};
+    get(this, 'model.resources').forEach((r) => {
+      count[r.name] = ( count[r.name] || 0 ) + 1;
+    });
+
+    const out = [];
+    get(this, 'model.resources').forEach((r) => {
+      out.push({
+        duplicate: count[r.name] > 1,
+        resource: r,
+      });
+    })
+
+    return out.sortBy('resource.name','resource.group');
+  }),
 
   grouped: computed('model.resources.[]', function() {
     const map = {};
@@ -36,7 +54,7 @@ export default Controller.extend({
   actions: {
     setNavGroup(group) {
       set(this, 'navGroup', group);
-      get(this, 'cookies').write(COOKIE.NAV_GROUP, group, {raw: true});
+      get(this, 'cookies').write(COOKIE.NAV_GROUP, group, { raw: true, path: '/' });
     }
   }
 });

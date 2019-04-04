@@ -7,7 +7,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('group', {path: '/g/:group/:version' }, function() {
+  this.route('group', { path: '/g/:group/:version' }, function() {
     this.route('resource-list', { path: '/:resource' }, function() {
       this.route('resource', { path: '/:name' });
     });
