@@ -62,6 +62,21 @@ export default Route.extend({
 
     delete schemas.paths;
 
+    const definitionsByKind = {};
+    Object.keys(schemas.definitions).forEach((id) => {
+      const obj = schemas.definitions[id];
+      const entries = obj['x-kubernetes-group-version-kind'];
+
+      if ( !entries ) {
+        return;
+      }
+
+      entries.forEach((entry) => {
+        const key = `${ entry.group || 'api' }/${ entry.version }/${ entry.kind }`;
+        definitionsByKind[key] = obj;
+      });
+    });
+
     const namespaceResource = resources.filterBy('name','namespaces').filterBy('group','api')[0];
     const list = await fetch.request(namespaceResource.basePath);
     const namespaces = list.items.map(x => Namespace.create(x));
@@ -70,7 +85,8 @@ export default Route.extend({
 
     return {
       resources: resources.sortBy('name'),
-      schemas
+      schemas,
+      definitionsByKind
     }
   },
 });

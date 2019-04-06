@@ -7,20 +7,32 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('group', { path: '/:group/:version' }, function() {
-    // /api/v1/namespaces/cattle-system/pods/cattle-cluster-agent-f7959895f-k6tmw
-    this.route('namespace', { path: '/namespaces/:namespace' }, function() {
-      resourceList.apply(this);
-    });
+  // There's 4 different ways to get to different resources..
+  // /api/<version>/<resource>
+  // /api/<version>/namespaces/<namespace>/<resource>
+  // /apis/<group>/<version>/<resource>
+  // /apis/<group>/<version>/namespaces/<namespace>/<resource>
+  this.route('apis', { path: '/apis/:group/:version'}, function() {
+    apiVersion.apply(this);
+  });
 
-    resourceList.apply(this);
+  this.route('api', { path: '/api/:version' }, function() {
+    apiVersion.apply(this);
   });
 });
 
-function resourceList() {
+function apiVersion() {
+  this.route('namespaced', { path: '/namespaces/:namespace' }, function() {
+    resourceList.apply(this);
+  });
+
+  resourceList.apply(this);
+}
+
+function resourceList(namespaced) {
   this.route('resource-list', { path: '/:resource' }, function() {
     this.route('create',   { path: '/_create' });
-    this.route('resource', { path: '/:name' });
+    this.route('detail', { path: '/:name' });
   });
 }
 export default Router;

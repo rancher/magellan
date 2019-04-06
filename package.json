@@ -44,6 +44,7 @@
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-qunit": "^3.4.1",
     "ember-resolver": "^5.0.1",
+    "ember-route-alias": "^0.1.7",
     "ember-source": "~3.7.0",
     "ember-wormhole": "^0.5.4",
     "eslint": "^4.19.1",

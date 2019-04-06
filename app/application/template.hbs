@@ -17,36 +17,19 @@
       <label>{{display-group g.group}}</label>
       <ul class="list-unstyled">
         {{#each g.resources as |r|}}
-          <li>
-            {{#if (and r.namespaced namespaces.current) }}
-              {{#link-to "group.namespace.resource-list" g.group r.groupVersion namespaces.current r.name activeParent="LI" disabled=(not r.canList)}}
-                {{r.kind}}
-              {{/link-to}}
-            {{else}}
-              {{#link-to "group.resource-list" g.group r.groupVersion r.name activeParent="LI" disabled=(not r.canList)}}
-                {{r.kind}}
-              {{/link-to}}
-            {{/if}}
-          </li>
+          {{link-to-resource-list resource=r}}
         {{/each}}
       </ul>
     {{/each}}
   {{else}}
     <ul class="list-unstyled">
-      {{#each flat as |r|}}
+      {{#each flat as |f|}}
         <li>
-          {{#if (and r.resource.namespaced namespaces.current) }}
-            {{#link-to "group.namespace.resource-list" r.resource.group r.resource.groupVersion namespaces.current r.resource.name activeParent="LI" disabled=(not r.canList)}}
-              {{r.resource.kind}}
-            {{/link-to}}
-          {{else}}
-            {{#link-to "group.resource-list" r.resource.group r.resource.groupVersion r.resource.name activeParent="LI" disabled=(not r.canList)}}
-              {{r.resource.kind}}
-            {{/link-to}}
-          {{/if}}
-          {{#if r.duplicate}}
-            <span class="text-muted"> ({{display-group r.resource.group}})</span>
-          {{/if}}
+          {{#link-to-resource-list resource=f.resource}}
+            {{#if f.duplicate}}
+              <span class="text-muted"> ({{display-group f.resource.group}})</span>
+            {{/if}}
+          {{/link-to-resource-list}}
         </li>
       {{/each}}
     </ul>

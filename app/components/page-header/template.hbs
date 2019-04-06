@@ -1,0 +1,26 @@
+<header>
+  <div class="left">
+    <h1>{{resource.kind}}</h1>
+    <h2>{{resource.group}}/{{resource.groupVersion}}</h2>
+  </div>
+  <div class="middle">
+    <h2>Namespace</h2>
+    {{#if overrideNamespace}}
+      <span class="text-muted">{{overrideNamespace}}</span>
+    {{else if isNamespaced}}
+      <select onchange={{action "switchNamespace" value="target.value"}}>
+        <option disabled>Select a Namespace...</option>
+        <option value="">(All)</option>
+        <option disabled>——————————</option>
+        {{#each namespaces.all as |ns|}}
+          <option value={{ns.metadata.name}} selected={{eq ns.metadata.name namespaces.current}}>{{ns.metadata.name}}</option>
+        {{/each}}
+      </select>
+    {{else}}
+      <span class="text-muted">(Not namespaced)</span>
+    {{/if}}
+  </div>
+  <div class="right">
+    <button class="btn btn-lg" disabled={{not resource.canCreate}} {{action "create"}}>Create</button>
+  </div>
+</header>

@@ -10,6 +10,7 @@ export default Service.extend({
 
   all:     null,
   current: null,
+  prev:    null,
 
   init() {
     this._super(...arguments);
@@ -27,6 +28,10 @@ export default Service.extend({
     const params = router._argsFor(prevRoute);
     let   newRouteName = prevRoute.name;
     let   changed = false;
+
+    if ( prev ) {
+      set(this, 'prev', prev);
+    }
 
     get(this, 'cookies').write(COOKIE.NAMESPACE, namespace, { path: '/' });
     set(this, 'current', namespace);
@@ -52,7 +57,6 @@ export default Service.extend({
     }
 
     if ( changed ) {
-      console.log('Changed from', prevRoute.name, 'to', newRouteName);
       router.transitionTo(newRouteName, ...params);
     }
   },
