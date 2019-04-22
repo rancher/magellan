@@ -3,16 +3,23 @@ import { inject as service } from '@ember/service';
 import { get, set } from '@ember/object'
 
 import { eachLimit } from '@rancher/ember-shared/utils/promise-limit';
+import ApplicationLoading from '@rancher/ember-shared/mixins/application-loading';
+import ApplicationError from '@rancher/ember-shared/mixins/application-error';
 
 import { compare } from 'magellan/utils/parse-k8s-version';
-import Resource from 'magellan/models/resource';
-import Namespace from 'magellan/models/namespace';
 
-export default Route.extend({
-  fetch:      service(),
-  namespaces: service(),
+export default Route.extend(ApplicationLoading, ApplicationError, {
+  lang:        service(),
+  fetch:       service(),
+  namespaces:  service(),
+  definitions: service(),
+
+  async beforeModel() {
+    await get(this, 'lang').switchLanguage();
+  },
 
   async model() {
+    const store = get(this, 'store');
     const fetch = get(this, 'fetch');
     const roots = await fetch.request('/');
     const versions = {};
@@ -52,41 +59,35 @@ export default Route.extend({
           }
           res.group = group;
           res.groupVersion = versions[group];
-          resources.push(Resource.create(res));
+          resources.push(store.createRecord('resource', res));
         });
       });
     });
 
-    const str = await fetch.request('/openapi/v2');
-    const schemas = JSON.parse(str);
+    const definitions = {};
+    let schemas = await fetch.request('/openapi/v2');
 
-    delete schemas.paths;
+    if ( typeof schemas === 'string' ) {
+      schemas = JSON.parse(schemas);
+    }
 
-    const definitionsByKind = {};
-    Object.keys(schemas.definitions).forEach((id) => {
-      const obj = schemas.definitions[id];
-      const entries = obj['x-kubernetes-group-version-kind'];
+    Object.keys(schemas.definitions).forEach((key) => {
+      const obj = store.createRecord('definition', schemas.definitions[key]);
 
-      if ( !entries ) {
-        return;
-      }
-
-      entries.forEach((entry) => {
-        const key = `${ entry.group || 'api' }/${ entry.version }/${ entry.kind }`;
-        definitionsByKind[key] = obj;
-      });
+      obj.setKey(key);
+      definitions[key] = obj;
     });
 
-    const namespaceResource = resources.filterBy('name','namespaces').filterBy('group','api')[0];
+    set(this, 'definitions.all', definitions);
+
+    const namespaceResource = resources.filterBy('name', 'namespaces').filterBy('group', 'api')[0];
     const list = await fetch.request(namespaceResource.basePath);
-    const namespaces = list.items.map(x => Namespace.create(x));
+    const namespaces = list.items.map((x) => store.createRecord('namespace', x));
 
     set(this, 'namespaces.all', namespaces);
 
     return {
       resources: resources.sortBy('name'),
-      schemas,
-      definitionsByKind
     }
   },
 });

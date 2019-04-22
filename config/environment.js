@@ -1,4 +1,7 @@
 'use strict';
+var pkg = require('../package.json');
+var fs   = require('fs');
+var YAML = require('js-yaml');
 
 module.exports = function(environment) {
   let ENV = {
@@ -26,12 +29,12 @@ module.exports = function(environment) {
 
     // *** PUBLIC INFORMATION sent to the client ***
     APP: {
+      version:               pkg.version,
       apiServer:             'https://localhost', // Where requests are proxied to
       apiEndpoint:           '/k8s',              // Only requests starting with this are proxied
       apiPrefix:             '',                  // This will be added after the endpoint and before the path the user requests
-
-      // Here you can pass flags/options to your application instance
-      // when it is created
+      locales:               readLocales(),
+      prefPrefix:            'm-',
     },
 
     // *** PRIVATE INFORMATION not pushed to client ***
@@ -100,4 +103,25 @@ function normalizeHost(host, defaultPort) {
   }
 
   return host;
+}
+
+function readLocales() {
+  /* Parse the translations from the translations folder*/
+  const files = fs.readdirSync('./translations');
+  const out = {};
+
+  files.forEach((filename) => {
+    if ( !filename.match(/\.ya?ml$/) && !filename.match(/\.json$/) ) {
+      // Ignore non-YAML files
+      return;
+    }
+
+    const yamlFile = YAML.safeLoad(fs.readFileSync(`./translations/${  filename }`));
+    const label  = yamlFile.languageName;
+    const locale = filename.replace(/\.[^.]+$/, '');
+
+    out[locale] = label || locale;
+  });
+
+  return out;
 }

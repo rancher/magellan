@@ -1,0 +1,24 @@
+generic:
+  cancel: Cancel
+
+asyncButton:
+  create:
+    action: Create
+    waiting: Creating&hellip;
+    success: Created
+    error: Error
+  save:
+    action: Save
+    waiting: Saving&hellip;
+    success: Saved
+    error: Error
+
+inputYaml:
+  download: Export to file
+  upload: Import from file
+
+copyToClipboard:
+  label:
+    normal: Copy to clipboard
+    success: Copied!
+    error: Error!

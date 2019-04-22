@@ -1,0 +1,11 @@
+{{input-yaml
+  title=(if model.metadata.name (concat "Edit " resource.kind ":" model.metadata.name) (concat "Create " resource.kind))
+  value=model
+  autoResize=true
+  codeMirrorOptions=(hash
+    foldGutter=true
+    gutters=(array 'CodeMirror-lint-markers' 'CodeMirror-foldgutter')
+  )
+}}
+
+{{action-cancel mode='save' action=(action 'save')}}

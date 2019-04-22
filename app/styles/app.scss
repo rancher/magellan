@@ -1,7 +1,16 @@
+@import "ember-shared/base/variables";
+@import "ember-shared/base/functions";
+@import "ember-shared/base/mixins";
+@import "ember-shared/base/helpers";
+@import "ember-shared/base/color";
+@import "ember-shared/base/basic";
+@import "ember-shared/components/input-yaml";
+
 HTML {
   --light: #92c8e8;
   --medium: #7086f1;
   --muted: #666;
+  --input-bg: #666;
   --dark: #192466;
   --darker: #121258;
   --dark-contrast: white;
@@ -52,7 +61,7 @@ NAV {
     border-bottom: 0;
   }
 
-  UL {
+  UL.list-unstyled {
     margin: 0 10px 10px 10px;
     padding: 5px;
     list-style-type: none;
@@ -115,4 +124,151 @@ HEADER {
 
 .text-muted {
   color: var(--muted);
+}
+
+.input-definition {
+  table-layout: fixed;
+  border: 1px solid blue;
+  width: 100%;
+
+  &>.key {
+    width: 200px;
+    vertical-align: top;
+  }
+
+  &>.value {
+  }
+}
+
+$btn-padding: 8px 12px;
+$xs-padding: 2px 3px;
+$sm-padding: 5px 10px;
+$lg-padding: 18px 30px;
+
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+button {
+  background: var(--default);
+}
+
+.btn,
+button,
+[class^='btn-'] {
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 0 solid transparent;
+  padding: $btn-padding;
+  border-radius: 1.5px;
+  line-height: 1.5;
+
+  &:hover {
+      text-decoration: none;
+  }
+}
+
+//icon button
+.icon-btn {
+  padding: 0;
+  &.btn-sm {
+    padding: 0;
+  }
+
+  span {
+    padding: 0 10px 0 5px;
+    vertical-align: middle;
+  }
+}
+
+//btn sizes
+.btn-xs,
+.btn-group-xs > .btn,
+.btn-xs .btn-label {
+    padding: $xs-padding;
+    font-size: .65em;
+    line-height: 1.5em;
+}
+
+.btn-group-xs > .btn {
+  padding: #{$xs-padding - 1};
+}
+
+.btn-sm,
+.btn-group-sm > .btn,
+.btn-sm .btn-label {
+    padding: $sm-padding;
+    border-radius: 0;
+    font-size: 0.87em;
+
+}
+
+.btn-group-sm > .btn {
+  padding: 4px 9px;
+  margin-left: -3px;
+}
+
+.btn-lg,
+.btn-group-lg > .btn,
+.btn-lg .btn-label {
+    padding: $lg-padding;
+    font-size: 1.2em;
+}
+
+.icon-group i {
+  font-size: 1.5em;
+}
+
+//disabled
+.btn-disabled,
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+  background-color: var(--light);
+  cursor: not-allowed;
+
+  &:hover {
+      background: var(--light);
+  }
+}
+
+//button group
+[class^='btn-group'] {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+  overflow: hidden;
+  background: var(--input-bg);
+  border-radius: 2px;
+
+  .btn, .btn-xs, .btn-sm, .btn-lg {
+    position: relative;
+    display: inline-block;
+
+    &.active {
+      background-color: var(--medium);
+    }
+  }
+}
+
+.right-buttons {
+  text-align: right;
+  float: right;
+}
+
+.hide {
+  display: none;
+}
+
+.input-yaml H1 {
+  margin: 0;
+  float: left;
 }

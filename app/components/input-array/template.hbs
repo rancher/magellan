@@ -1,0 +1,17 @@
+<div>
+  <button {{action "add"}}>+</button>
+  {{#if (eq model.length 0)}}
+    No items
+  {{else if (eq model.length 1)}}
+    1 item
+  {{else}}
+    {{model.length}} items
+  {{/if}}
+</div>
+<div>{{definition}} -- {{fieldType}} -- {{model}}</div>
+<div>
+  {{#each model as |item|}}
+    <button {{action "remove" item}}>-</button>
+    {{input-definition model=item definition=definition fieldType=fieldType}}
+  {{/each}}
+</div>
