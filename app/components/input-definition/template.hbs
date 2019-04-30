@@ -1,22 +1,24 @@
 {{#if fieldType}}
-  {{component (concat 'input-' fieldType) value=model}}
+  {{component (concat "input-" fieldType) value=model}}
 {{else if definition.type}}
-  {{component (concat 'input-' definition.type) value=model}}
+  {{component (concat "input-" definition.type) value=model}}
 {{else}}
   <table class="input-definition">
-    {{#each fields as |f|}}
-      <tr>
-        <td class="key" width="200" valign="top">{{f.key}}</td>
-        <td class="value">
-          <b>1: {{f.fieldType}} -- {{f.definition}}</b>
-          {{component
-            f.component
-            fieldType=f.fieldType
-            definition=f.definition
-            value=(get model f.key)
-          }}
-        </td>
-      </tr>
-    {{/each}}
+    <tbody>
+      {{#each fields as |f|}}
+        <tr>
+          <td class="key" width="200" valign="top">{{f.key}}</td>
+          <td class="value">
+            <b>1: {{f.fieldType}} -- {{f.definition}}</b>
+            {{component
+              f.component
+              fieldType=f.fieldType
+              definition=f.definition
+              value=(get model f.key)
+            }}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
   </table>
 {{/if}}

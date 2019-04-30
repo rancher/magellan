@@ -4,11 +4,17 @@ import { inject as service } from '@ember/service';
 import { dasherize } from '@ember/string'
 import { indent as _indent } from '@rancher/ember-shared/utils/string';
 
-const IF_ROOT_ADD = ['apiVersion','kind','metadata'];
-
 const ALWAYS_ADD = [
+  'apiVersion',
+  'kind',
+  'metadata',
   'metadata.name',
   'spec',
+  'spec.selector',
+  'spec.selector.matchLabels',
+  'spec.template',
+  'spec.template.metadata',
+  'spec.template.metadata.labels',
   'spec.template.spec.containers.name',
   'spec.template.spec.containers.image',
 ];
@@ -58,10 +64,10 @@ export default Base.extend({
     return get(this, '_key');
   },
 
-  createYaml(data, populate = true, depth = 0, path='') {
+  createYaml(data, populate = true, depth = 0, path = '') {
     const self = this;
 
-    //console.log('createYaml', this._key, data, populate, depth);
+    // console.log('createYaml', this._key, data, populate, depth);
     data = data || {};
 
     const gvk = ( get(this, 'x-kubernetes-group-version-kind') || [])[0];
@@ -76,30 +82,23 @@ export default Base.extend({
 
     const regularFields = [];
 
-    if ( depth == 0 ) {
-      regularFields.addObjects(IF_ROOT_ADD);
-    }
-
     // Add all the parents of each key so that spec.template.foo.blah
     // causes 'spec', 'template' and 'foo' keys to be created
     let always = ALWAYS_ADD.slice();
+
     for ( let i = always.length - 1 ; i >= 0 ; i-- ) {
       let entry = always[i].split(/\./);
+
       while ( entry.length ) {
         always.addObject(entry.join('.'));
-        entry = entry.slice(0,-1);
+        entry = entry.slice(0, -1);
       }
     }
 
-    // Sort so that parents come first
-    //always.sort();
-
     always.forEach((entry) => {
-      let pathParts = path.split(/\./);
-
       let parts = entry.split(/\./);
       let key = parts[parts.length - 1];
-      let prefix = parts.slice(0,-1).join('.');
+      let prefix = parts.slice(0, -1).join('.');
 
       if ( prefix === path && this.properties[key] ) {
         regularFields.addObject(key);
@@ -117,7 +116,7 @@ export default Base.extend({
     NEVER_ADD.forEach((entry) => {
       let parts = entry.split(/\./);
       let key = parts[parts.length - 1];
-      let prefix = parts.slice(0,-1).join('.');
+      let prefix = parts.slice(0, -1).join('.');
 
       if ( prefix === path && this.properties[key] ) {
         commentFields.removeObject(key);
@@ -125,10 +124,6 @@ export default Base.extend({
     });
 
     commentFields.removeObjects(regularFields);
-
-    if ( depth > 0 ) {
-      commentFields.removeObjects(IF_ROOT_ADD);
-    }
 
     let regular = regularFields.map((key) => {
       return stringifyField(key);
@@ -139,8 +134,10 @@ export default Base.extend({
     });
 
     let out = regular.join('\n');
-    out += "\n";
+
+    out += '\n';
     out += comments.join('\n');
+
     return out.trim();
 
     // ---------------
@@ -159,7 +156,8 @@ export default Base.extend({
           out +=  `\n#  - ${ field.items.type }`;
         } else if ( field.items['$ref'] ) {
           const subDef = get(self, 'definitions').getRef(field.items['$ref']);
-          const chunk = subDef.createYaml(null, populate, depth+1, (path ? path+'.'+key : key));
+          const chunk = subDef.createYaml(null, populate, depth + 1, (path ? `${ path }.${ key }` : key));
+
           out += `\n  - ${ indent(chunk, 2).substr(4) }`;
         }
       } else if ( field.type ) {
@@ -172,13 +170,14 @@ export default Base.extend({
         } else if ( typeof data[key] !== 'undefined' ) {
           out += data[key];
         } else {
-          out +=  `#${ field.type }`;
+          out +=  ` #${ field.type }`;
         }
       } else if ( field['$ref'] ) {
         const subDef = get(self, 'definitions').getRef(field['$ref']);
 
         if ( subDef && subDef.properties ) {
-          const chunk = subDef.createYaml(data[key], populate, depth+1, (path ? path+'.'+key : key));
+          const chunk = subDef.createYaml(data[key], populate, depth + 1, (path ? `${ path }.${ key }` : key));
+
           out += `\n${ indent(chunk) }`;
         }
       }
@@ -260,9 +259,9 @@ export default Base.extend({
 });
 
 function comment(lines) {
-  return (lines || '').split('\n').map((x) => `#${ x.replace(/^#/,'') }`).join('\n');
+  return (lines || '').split('\n').map((x) => `#${ x.replace(/^#/, '') }`).join('\n');
 }
 
-function indent(lines, depth=1) {
-  return _indent(lines, depth*INDENT, ' ', /^#/); 
+function indent(lines, depth = 1) {
+  return _indent(lines, depth * INDENT, ' ', /^#/);
 }

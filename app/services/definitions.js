@@ -14,11 +14,12 @@ export default Service.extend({
 
   getRef(ref) {
     const key = ref.replace(/^#\/definitions\//, '');
+
     return get(this, 'all')[key];
   },
 
   byKind: computed('all.@each.x-kubernetes-group-version-kind', function() {
-    const all = get(this, 'all')||[];
+    const all = get(this, 'all') || [];
     const out = {};
 
     Object.keys(all).forEach((id) => {
@@ -31,6 +32,7 @@ export default Service.extend({
 
       entries.forEach((entry) => {
         const key = `${ entry.group || 'api' }/${ entry.version }/${ entry.kind }`;
+
         out[key] = obj;
       });
     });

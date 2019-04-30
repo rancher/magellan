@@ -2,8 +2,8 @@ import Component from '@ember/component';
 import { get, set } from '@ember/object';
 
 export default Component.extend({
-  model: null,
-  type: null,
+  model:      null,
+  type:       null,
   definition: null,
 
   init() {
@@ -11,6 +11,7 @@ export default Component.extend({
 
     if ( !get(this, 'model') ){
       const model = [];
+
       set(this, 'model', model);
     }
   },
@@ -20,6 +21,7 @@ export default Component.extend({
       const type = get(this, 'type');
       const def = get(this, 'definition');
       let entry;
+
       if ( type ) {
         entry = '';
       } else {

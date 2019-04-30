@@ -10,7 +10,8 @@ export function initialize(instance) {
 
       this.set(key, undefined);
 
-      const el = document.querySelector(`#shoebox-${key}`);
+      const el = document.querySelector(`#shoebox-${ key }`);
+
       if ( el ) {
         el.parentNode.removeChild(el);
       }

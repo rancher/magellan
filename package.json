@@ -57,10 +57,11 @@
   },
   "dependencies": {
     "@rancher/ember-cookies": "^0.4.0",
-    "@rancher/ember-shared": "0.0.2",
+    "@rancher/ember-shared": "0.0.4",
     "@rancher/ivy-codemirror": "2.1.4",
     "@xg-wang/whatwg-fetch": "^3.0.0",
     "buffer": "^5.2.1",
+    "ember-cli-file-saver": "^2.0.0",
     "ember-cli-head": "^0.4.1",
     "ember-copy": "^1.0.0",
     "ember-fetch": "^6.5.0",

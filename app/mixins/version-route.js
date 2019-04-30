@@ -7,7 +7,7 @@ export default Mixin.create({
     const group   = params.group || this.defaultGroup;
     const version = params.version;
 
-    const resources = this.modelFor('application').resources
+    const resources = this.modelFor('authed').resources
       .filterBy('group', group)
       .filterBy('groupVersion', version);
 

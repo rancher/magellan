@@ -18,7 +18,7 @@ export default Component.extend({
     const singular = get(this, 'singular');
     const isNamespaced = get(this, 'isNamespaced');
 
-    let route = `${ singular ? 'api' : 'apis' }${ isNamespaced ? '.namespaced' : '' }.resource-list`;
+    let route = `authed.${ singular ? 'api' : 'apis' }${ isNamespaced ? '.namespaced' : '' }.resource-list`;
 
     const out = [route];
 

@@ -8,6 +8,7 @@ export default Component.extend({
   didInsertElement() {
     const id = this.$('TEXTAREA[id]')[0].id;
     const cm = get(this, 'codeMirror').instanceFor(id);
+
     cm.execCommand('foldAll');
   },
 

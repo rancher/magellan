@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import { get, set, computed, observer } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 
 import { COOKIE } from 'magellan/utils/constants';
 
@@ -15,6 +15,7 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     const current = get(this, 'cookies').read(COOKIE.NAMESPACE) || '';
+
     set(this, 'current', current);
   },
 
@@ -24,7 +25,6 @@ export default Service.extend({
     const prev = get(this, 'current');
     const router = get(this, 'router');
     const prevRoute = router.currentRoute;
-    const keys = router._keysFor(prevRoute);
     const params = router._argsFor(prevRoute);
     let   newRouteName = prevRoute.name;
     let   changed = false;
@@ -66,6 +66,6 @@ export default Service.extend({
   }),
 
   isAll: computed('current', function() {
-    return !get(this,'current');
+    return !get(this, 'current');
   }),
 });

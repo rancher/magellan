@@ -7,17 +7,21 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  // There's 4 different ways to get to different resources..
-  // /api/<version>/<resource>
-  // /api/<version>/namespaces/<namespace>/<resource>
-  // /apis/<group>/<version>/<resource>
-  // /apis/<group>/<version>/namespaces/<namespace>/<resource>
-  this.route('apis', { path: '/apis/:group/:version'}, function() {
-    apiVersion.apply(this);
-  });
+  this.route('error');
 
-  this.route('api', { path: '/api/:version' }, function() {
-    apiVersion.apply(this);
+  this.route('authed', { path: '/' }, function() {
+    // There's 4 different ways to get to different resources..
+    // /api/<version>/<resource>
+    // /api/<version>/namespaces/<namespace>/<resource>
+    // /apis/<group>/<version>/<resource>
+    // /apis/<group>/<version>/namespaces/<namespace>/<resource>
+    this.route('apis', { path: '/apis/:group/:version' }, function() {
+      apiVersion.apply(this);
+    });
+
+    this.route('api', { path: '/api/:version' }, function() {
+      apiVersion.apply(this);
+    });
   });
 });
 
@@ -29,7 +33,7 @@ function apiVersion() {
   resourceList.apply(this);
 }
 
-function resourceList(namespaced) {
+function resourceList() {
   this.route('resource-list', { path: '/:resource' }, function() {
     this.route('create',   { path: '/_create' });
     this.route('detail', { path: '/:name' });

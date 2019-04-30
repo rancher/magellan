@@ -17,6 +17,7 @@ export default Component.extend({
 
     return Object.keys(fields).map((key) => {
       const field = fields[key];
+
       if ( field.type ) {
         return {
           key,
@@ -25,10 +26,11 @@ export default Component.extend({
         }
       } else if ( field['$ref'] ) {
         const subDef = get(this, 'definitions').getRef(field['$ref']);
+
         return {
           key,
           definition: subDef,
-          component: 'input-definition',
+          component:  'input-definition',
         }
       } else if ( field.items ) {
         if ( field.items.type ) {
@@ -39,10 +41,11 @@ export default Component.extend({
           }
         } else if ( field.items['$ref'] ) {
           const subDef = get(this, 'definitions').getRef(field.items['$ref']);
+
           return {
             key,
             definition: subDef,
-            component: 'input-array',
+            component:  'input-array',
           }
         }
       } else {

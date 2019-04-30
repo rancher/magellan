@@ -4,7 +4,7 @@ import { get } from '@ember/object';
 
 export default Mixin.create({
   definitions: service(),
-  namespaces: service(),
+  namespaces:  service(),
 
   model() {
     const parentModel = this.modelFor(get(this, 'resourceListRoute'));

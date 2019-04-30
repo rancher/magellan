@@ -1,10 +1,34 @@
 {{page-header
   resource=resource
+  parsed=parsed
   isNamespaced=isNamespaced
   overrideNamespace=overrideNamespace
 }}
 <main>
-  <h1>{{body.metadata.name}}</h1>
-  {{to-json body}}
+  {{#input-yaml
+    value=body
+    showUpload=false
+    codeMirrorOptions=(hash
+      readOnly=(not edit)
+      lineNumbers=edit
+      foldGutter=edit
+      gutters=(if edit (array "CodeMirror-lint-markers" "CodeMirror-foldgutter") (array))
+    )
+  }}
+    {{#if (not (or create edit))}}
+      {{#link-to (query-params edit=true) class="btn"}}EDIT{{/link-to}}
+      <a class="btn" href="#" {{action "delete"}}>DELETE</a>
+    {{/if}}
+  {{/input-yaml}}
+
+  <div>
+    {{#if create}}
+      <a class="btn" href="#" {{action "create"}}>SAVE</a>
+      <a class="btn" href="#" {{action "cancel"}}>CANCEL</a>
+    {{else if edit}}
+      <a class="btn" href="#" {{action "save"}}>SAVE</a>
+      <a class="btn" href="#" {{action "cancelEdit"}}>CANCEL</a>
+    {{/if}}
+  </div>
 </main>
 

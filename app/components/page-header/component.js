@@ -11,9 +11,12 @@ export default Component.extend({
   actions: {
     create() {
       const router = get(this, 'router');
-      const parent = router.currentRouteName.replace(/\.index$/,'');
+      const parent = router.currentRouteName
+        .replace(/\.index$/, '')
+        .replace(/\.detail/, '')
+        .replace(/\.index$/, '');
 
-      get(this, 'router').transitionTo(`${parent}.create`);
+      get(this, 'router').transitionTo(`${ parent }.create`);
     },
 
     switchNamespace(neu) {

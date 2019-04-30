@@ -5,6 +5,9 @@ import { inject as service } from '@ember/service';
 const Resource = Base.extend({
   definitions: service(),
 
+  basePath:       null,
+  namespacedPath: null,
+
   canCreate: canVerb('create'),
   canList:   canVerb('list'),
   canGet:    canVerb('get'),
@@ -25,6 +28,14 @@ const Resource = Base.extend({
 
     return `${ group }/${ version }`;
   }),
+
+  baseUrl() {
+    return get(this, 'basePath');
+  },
+
+  namespacedUrl(namespace) {
+    return get(this, 'namespacedPath').replace('%NAMESPACE%', escape(namespace));
+  },
 });
 
 // Resource.reopenClass({

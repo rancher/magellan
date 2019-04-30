@@ -1,6 +1,7 @@
 import Mixin from '@ember/object/mixin';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { safeLoad } from 'js-yaml';
 
 export default Mixin.create({
   fetch:      service(),
@@ -26,12 +27,20 @@ export default Mixin.create({
       url = resource.basePath;
     }
 
-    const body = await fetch.request(`${ url }/${ escape(params.name) }`);
+    const body = await fetch.request(`${ url }/${ escape(params.name) }`, {
+      headers: {
+        'accept': 'application/yaml',
+      }
+    });
+
+    const parsed = safeLoad(body);
 
     return {
       resource,
       isNamespaced,
       body,
+      originalBody: body,
+      parsed,
     };
   }
 

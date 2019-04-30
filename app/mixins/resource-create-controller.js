@@ -1,22 +1,45 @@
 import Mixin from '@ember/object/mixin';
 import { get } from '@ember/object'
 import { inject as service } from '@ember/service';
+import { safeLoad } from 'js-yaml';
 
 export default Mixin.create({
-  fetch: service(),
+  fetch:  service(),
+  router: service(),
 
   actions: {
     async save(cb) {
-      const url = get(this, 'model.resource.basePath');
-      const out = await get(this, 'fetch').request(url, {
-        method: 'POST',
-        data: get(this, 'model.body'),
-        headers: {
-          'content-type': 'application/yaml',
-        }
-      });
+      try {
+        let url, namespace;
+        const resource = get(this, 'model.resource');
+        const body = get(this, 'model.body')
+          .split(/\n/)
+          .filter((x) => !x.startsWith('#'))
+          .replace(/\s*#.*$/, '')
+          .join('\n');
+        const obj = safeLoad(body);
 
-      debugger;
+        if ( resource.namespaced ) {
+          namespace = obj && obj.metadata && obj.metadata.namespace || 'default';
+          url = resource.namespacedUrl(namespace);
+        } else {
+          url = resource.baseUrl();
+        }
+
+        const out = await get(this, 'fetch').request(url, {
+          body,
+          method:  'POST',
+          headers: {
+            'content-type': 'application/yaml',
+          }
+        });
+
+        cb(true);
+        get(this, 'router').transitionTo(out.metadata.selfLink);
+      } catch (e) {
+        debugger;
+        cb(false);
+      }
     }
   },
 });
