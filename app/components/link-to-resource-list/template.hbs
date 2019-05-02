@@ -1,4 +1,7 @@
+{{yield "before-outside"}}
 {{#link-to params=params activeParent="LI" disabled=(not resource.canList)}}
+  {{yield "before-inside"}}
   {{resource.kind}}
-  {{yield}}
+  {{yield "after-inside"}}
 {{/link-to}}
+{{yield "after-outside"}}

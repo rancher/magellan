@@ -1,9 +1,5 @@
-<main>
-  {{resource-edit
-    resource=model.resource
-    isNamespaced=model.isNamespaced
-    model=model.body
-    mode="create"
-    save=(action "save")
-  }}
-</main>
+{{resource-detail
+  model=model
+  create=true
+  edit=true
+}}

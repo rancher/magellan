@@ -12,25 +12,42 @@
     {{/if}}
   </p>
 
+  {{#if favorites.length}}
+    <label><i class="icon icon-star-fill"/> Favorites</label>
+    <ul class="list-unstyled">
+      {{#each favorites as |r|}}
+        {{#link-to-resource-list resource=r as |block|}}
+          {{~#if (eq block "after-outside") ~}}
+            <i class="icon icon-star-fill remove-favorite" {{action "removeFavorite" r.uniqueName}} />
+          {{~/if~}}
+        {{/link-to-resource-list}}
+      {{/each}}
+    </ul>
+   {{/if}}
+
   {{#if (eq navGroup "group")}}
     {{#each grouped as |g|}}
       <label>{{display-group g.group}}</label>
       <ul class="list-unstyled">
         {{#each g.resources as |r|}}
-          {{link-to-resource-list resource=r}}
+          {{#link-to-resource-list resource=r as |block|}}
+            {{~#if (eq block "after-outside") ~}}
+              <i class="icon icon-star-open add-favorite" {{action "addFavorite" r.uniqueName}} />
+            {{~/if~}}
+          {{/link-to-resource-list}}
         {{/each}}
       </ul>
     {{/each}}
   {{else}}
     <ul class="list-unstyled">
       {{#each flat as |f|}}
-        <li>
-          {{#link-to-resource-list resource=f.resource}}
-            {{#if f.duplicate}}
-              <span class="text-muted"> ({{display-group f.resource.group}})</span>
-            {{/if}}
-          {{/link-to-resource-list}}
-        </li>
+        {{#link-to-resource-list resource=f.resource as |block|}}
+          {{~#if (eq block "after-outside") ~}}
+            <i class="icon icon-star-open add-favorite" {{action "addFavorite" r.uniqueName}} />
+          {{~else if (and f.duplicate (eq block "after-inside"))~}}
+            <span class="text-muted"> ({{display-group f.resource.group}})</span>
+          {{~/if~}}
+        {{/link-to-resource-list}}
       {{/each}}
     </ul>
   {{/if}}

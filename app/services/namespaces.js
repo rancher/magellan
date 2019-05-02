@@ -33,7 +33,7 @@ export default Service.extend({
       set(this, 'prev', prev);
     }
 
-    get(this, 'cookies').write(COOKIE.NAMESPACE, namespace, { path: '/' });
+    get(this, 'cookies').write(COOKIE.NAMESPACE, namespace, COOKIE.SESSION_SCOPED);
     set(this, 'current', namespace);
 
     switch ( prevRoute.name ) {

@@ -22,6 +22,10 @@ const Resource = Base.extend({
     return `${ apiVersion }/${ kind }`;
   }),
 
+  uniqueName: computed('group', 'name', function() {
+    return `${ get(this, 'group') }/${ get(this, 'name') }`;
+  }),
+
   apiVersion: computed('group', 'groupVersion', function() {
     const group   = get(this, 'group');
     const version = get(this, 'groupVersion');

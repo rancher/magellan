@@ -8,6 +8,7 @@ export default Component.extend({
   namespaces: service(),
 
   tagName: 'LI',
+  classNames: ['clip'],
 
   resource: null,
 

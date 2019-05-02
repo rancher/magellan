@@ -4,31 +4,45 @@
   isNamespaced=isNamespaced
   overrideNamespace=overrideNamespace
 }}
-<main>
+
+{{#if errors.length}}
+  <section>
+    {{#each errors as |error|}}
+      <div class="error">{{error}}</div>
+    {{/each}}
+  </section>
+{{/if}}
+
+<main class={{if view 'code-view' 'code-edit'}}>
   {{#input-yaml
-    value=body
+    value=editBody
     showUpload=false
+    readOnly=view
     codeMirrorOptions=(hash
-      readOnly=(not edit)
       lineNumbers=edit
       foldGutter=edit
       gutters=(if edit (array "CodeMirror-lint-markers" "CodeMirror-foldgutter") (array))
     )
   }}
-    {{#if (not (or create edit))}}
-      {{#link-to (query-params edit=true) class="btn"}}EDIT{{/link-to}}
-      <a class="btn" href="#" {{action "delete"}}>DELETE</a>
+    {{#if view}}
+      <button class="btn bg-primary" {{action "reload"}}><i class="icon icon-gear"/> Reload</button>
+      <button class="btn bg-primary" {{action "showEdit"}}><i class="icon icon-edit"/> Edit</button>
+      <button class="btn bg-link text-error" {{action "delete"}}><i class="icon icon-delete"/> Delete</button>
+    {{else}}
+      {{action-cancel
+        mode=(if create "create" "save")
+        action=(action (if create "create" "save"))
+        cancel=(action (if create "create" "cancelEdit"))
+      }}
     {{/if}}
   {{/input-yaml}}
 
-  <div>
-    {{#if create}}
-      <a class="btn" href="#" {{action "create"}}>SAVE</a>
-      <a class="btn" href="#" {{action "cancel"}}>CANCEL</a>
-    {{else if edit}}
-      <a class="btn" href="#" {{action "save"}}>SAVE</a>
-      <a class="btn" href="#" {{action "cancelEdit"}}>CANCEL</a>
-    {{/if}}
-  </div>
+  {{#unless view}}
+    {{action-cancel
+      mode=(if create "create" "save")
+      action=(action (if create "create" "save"))
+      cancel=(action (if create "create" "cancelEdit"))
+    }}
+  {{/unless}}
 </main>
 

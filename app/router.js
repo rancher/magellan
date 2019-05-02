@@ -10,6 +10,8 @@ Router.map(function() {
   this.route('error');
 
   this.route('authed', { path: '/' }, function() {
+    this.route('index', { path: '/' });
+
     // There's 4 different ways to get to different resources..
     // /api/<version>/<resource>
     // /api/<version>/namespaces/<namespace>/<resource>

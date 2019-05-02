@@ -42,6 +42,12 @@ export default Mixin.create({
       originalBody: body,
       parsed,
     };
+  },
+
+  actions: {
+    reloadModel() {
+      this.refresh();
+    }
   }
 
 });

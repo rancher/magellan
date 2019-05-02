@@ -1,6 +1,7 @@
 import Component from '@ember/component';
-import { get, set } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { alias } from '@ember/object/computed';
 import { safeLoad } from 'js-yaml';
 
 export default Component.extend({
@@ -8,17 +9,22 @@ export default Component.extend({
   fetch:      service(),
   router:     service(),
 
-  resource:          null,
-  isAllNamespaces:   null,
-  isNamespaced:      null,
-  overrideNamespace: null,
-  body:              null,
+  model:      null,
+  create:     null,
+  edit:       null,
 
-  originalBody:      null,
+  resource:          alias('model.resource'),
+  isAllNamespaces:   alias('model.isAllNamespaces'),
+  isNamespaced:      alias('model.isNamespaced'),
+  overrideNamespace: alias('model.overrideNamespace'),
+  parsed:            alias('model.parsed'),
+  body:              alias('model.body'),
+
+  editBody: null,
 
   didReceiveAttrs() {
     this._super(...arguments);
-    set(this, 'originalBody', get(this, 'body'));
+    set(this, 'editBody', get(this, 'body'));
 
   },
 
@@ -29,9 +35,21 @@ export default Component.extend({
     cm.execCommand('foldAll');
   },
 
+  view: computed('create', 'edit', function() {
+    return !get(this, 'create') && !get(this, 'edit');
+  }),
+
   actions: {
+    reload() {
+      this.reload();
+    },
+
+    showEdit() {
+      set(this, 'edit', true);
+    },
+
     cancelEdit() {
-      set(this, 'body', get(this, 'originalBody'));
+      set(this, 'editBody', get(this, 'body'));
       set(this, 'edit', false);
     },
 
@@ -39,6 +57,8 @@ export default Component.extend({
       try {
         let url, namespace;
         const resource = get(this, 'resource');
+
+        // Strip out all teh comments
         const body = get(this, 'body')
           .split(/\n/)
           .filter((x) => !x.startsWith('#'))
@@ -67,6 +87,34 @@ export default Component.extend({
         debugger;
         cb(false);
       }
+    },
+
+    async save(cb) {
+      const body = get(this, 'editBody');
+      const url = get(this, 'parsed.metadata.selfLink');
+
+      try {
+        const out = await get(this, 'fetch').request(url, {
+          body,
+          method:  'PUT',
+          headers: {
+            'content-type': 'application/yaml',
+          }
+        });
+
+        cb(true);
+        set(this, 'body', body);
+        set(this, 'edit', false);
+        this.send('reload');
+      } catch (e) {
+        window.scrollTo(0,0);
+        set(this, 'errors', [e.message.message || e]);
+        cb(false);
+      }
+    },
+
+    async delete() {
+      debugger;
     }
   },
 });
