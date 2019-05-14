@@ -7,6 +7,7 @@ import { COOKIE, DEFAULT_FAVORITES } from 'magellan/utils/constants';
 export default Controller.extend({
   cookies:    service(),
   namespaces: service(),
+  themeSvc:   service('theme'),
 
   navGroup: null,
   favoriteNames: null,
@@ -39,6 +40,10 @@ export default Controller.extend({
     removeFavorite(name) {
       get(this, 'favoriteNames').removeObject(name);
       this.saveFavorites();
+    },
+
+    setTheme(name) {
+      get(this, 'themeSvc').set('current', name);
     }
   },
 

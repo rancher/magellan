@@ -4,13 +4,36 @@ import { inject as service } from '@ember/service';
 
 const Resource = Base.extend({
   definitions: service(),
+  router:      service(),
 
   basePath:       null,
   namespacedPath: null,
+  resourcePath:   null,
 
   canCreate: canVerb('create'),
   canList:   canVerb('list'),
   canGet:    canVerb('get'),
+
+  actions: {
+    promptDelete() {
+      get(this, 'modalService').toggleModal('confirm-delete', {
+        escToClose: true,
+        resources:  [this]
+      });
+    },
+
+    clone() {
+      debugger;
+    },
+
+    edit(model) {
+      get(this, 'router').transitionTo(model.SelfLink + '?edit=true');
+    },
+
+    delete() {
+      debugger;
+    },
+  },
 
   definitionKey: computed('apiVersion', 'kind', function() {
     // io.k8s.api.apps.v1.Deployment
@@ -38,8 +61,22 @@ const Resource = Base.extend({
   },
 
   namespacedUrl(namespace) {
-    return get(this, 'namespacedPath').replace('%NAMESPACE%', escape(namespace));
+    return get(this, 'namespacedPath').replace('{namespace}', escape(namespace));
   },
+
+  listUrl(namespace) {
+    if ( namespace ) {
+      return get(this, 'listPath').replace('{namespace}', escape(namespace));
+    } else {
+      return get(this, 'basePath');
+    }
+  },
+
+  resourceUrl(namespace, name) {
+    return get(this, 'resourcePath')
+      .replace('{namespace}', escape(namespace))
+      .replace('{name}', escape(name));
+  }
 });
 
 // Resource.reopenClass({

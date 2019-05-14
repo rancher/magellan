@@ -3,9 +3,64 @@
   isNamespaced=isNamespaced
 }}
 <main>
-  {{resource-table
-    resource=resource
-    rows=body.items
-    showNamespace=showNamespace
+  {{#sortable-table
+    classNames="grid sortable-table"
+    body=body.rowObjects
+    searchText=searchText
+    sortBy=sortBy
+    descending=descending
+    groupByKey=groupByKey
+    groupByRef=groupByRef
+    pagingLabel="resourceList.pagination"
+    bulkActions=true
+    rightActions=true
+    headers=headers
+    sortUpIcon="icon-sort-up-fill"
+    sortDownIcon="icon-sort-down-fill"
+    idField="Id"
+    as |sortable kind inst dt|
   }}
+    {{#if (eq kind "row")}}
+    <tr class="main-row">
+      <td class="check" valign="middle" data-title={{dt.check}}>
+        {{check-box nodeId=inst.Id}}
+      </td>
+      {{#each headers as |h|}}
+        <td data-title={{get dt h.name}}>
+          {{#if h.linkResource}}
+            <a href={{inst.SelfLink}}>{{get inst h.name}}</a>
+          {{else if h.linkNamespace}}
+            <a href="#" {{action "switchNamespace" (get inst h.name)}}>{{get inst h.name}}</a>
+          {{else if h.component}}
+            {{component h.component value=(get inst h.name)}}
+          {{else}}
+            {{get inst h.name}}
+          {{/if}}
+        </td>
+      {{/each}}
+      <td data-title={{dt.actions}} class="actions">
+        {{action-menu model=inst context=resource}}
+      </td>
+    </tr>
+    {{else if (eq kind "group")}}
+      <tr class="group-row">
+        <td colspan={{sortable.fullColspan}}>
+          <div class="group-tab">
+            {{inst.ref}}
+          </div>
+        </td>
+      </tr>
+    {{else if (eq kind "right-actions")}}
+      {{#if isNamespaced}}
+        <div class="btn-group icon-group">
+          <button {{action "setGroup" "none"}} class="btn bg-transparent {{if (eq group "none") "active"}}"><i class="icon icon-list-flat"/></button>
+          <button {{action "setGroup" "namespace"}} class="btn bg-transparent {{if (eq group "namespace") "active"}}"><i class="icon icon-list-grouped"/></button>
+        </div>
+      {{/if}}
+    {{else if (eq kind "no-match")}}
+      <tr><td colspan={{sortable.fullColspan}} class="text-center text-muted p-20">{{t "resourceList.noMatch"}}</td></tr>
+    {{else if (eq kind "no-rows")}}
+      <tr><td colspan={{sortable.fullColspan}} class="text-center text-muted p-20">{{t "resourceList.noRows"}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
 </main>

@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'icons';
   src:
-    url('fonts/icons.ttf?oto2wf') format('truetype'),
-    url('fonts/icons.woff?oto2wf') format('woff'),
-    url('fonts/icons.svg?oto2wf#icons') format('svg');
+    url('fonts/icons.ttf?9o85co') format('truetype'),
+    url('fonts/icons.woff?9o85co') format('woff'),
+    url('fonts/icons.svg?9o85co#icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -107,8 +107,14 @@
 .icon-sort-down:before {
   content: "\e918";
 }
+.icon-sort-down-fill:before {
+  content: "\e91d";
+}
 .icon-sort-up:before {
   content: "\e919";
+}
+.icon-sort-up-fill:before {
+  content: "\e91e";
 }
 .icon-sort:before {
   content: "\e91a";

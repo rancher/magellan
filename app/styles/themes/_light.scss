@@ -1,6 +1,6 @@
 // Local variables for reused colors
-$lightest: #F1F2F3;
-$lighter: #BABFC5;
+$lightest: #FAFAFA;
+$lighter: #EDF2F9;
 $light: #9B9FA5;
 $medium: #7B8085;
 $dark: #5B6064;
@@ -8,13 +8,13 @@ $darker: #3C4044;
 $darkest: #2D3033;
 
 
-$contrasted-dark: $darkest !default;
-$contrasted-light: $lightest !default;
+$contrasted-dark: black !default;
+$contrasted-light: white !default;
 
-$primary:   #12BE72;
+$primary:   #337ab7;
 $secondary: $darkest;
 $link:      #6cb4b9;
-$disabled:  $medium;
+$disabled:  #c8c8c8;
 $success:   #9ebb85;
 $info:      #d7c25a;
 $warning:   #d7c25a;
@@ -28,6 +28,10 @@ $selected: rgba($primary, .5);
   @include color-variables((
     default:    $primary,
     muted:      $disabled,
+    disabled:   (
+      default-text: white,
+      default: $disabled,
+    ),
     link:       (
       default-text: $link,
       hover-text:   darken($link, 10%),
@@ -45,9 +49,10 @@ $selected: rgba($primary, .5);
   ), true);
 
   --body-bg:                    white;
-  --header-bg:                  #f1f2f3;
-  --nav-bg:                     #f1f2f3;
-  --footer-bg:                  #f1f2f3;
+  --body-text:                  #{$darkest};
+  --header-bg:                  #{$lighter};
+  --nav-bg:                     #{$lighter};
+  --footer-bg:                  #{$lighter};
   --box-bg:                     #{$light};
   --border:                     #{$medium};
 
@@ -67,8 +72,8 @@ $selected: rgba($primary, .5);
   --input-label:                #{$dark};
   --input-text:                 black;
   --input-placeholder:          #{$medium};
-  --input-border:               #{$medium};
-  --input-bg:                   #{$light};
+  --input-border:               #{$dark};
+  --input-bg:                   #{$lightest};
   --input-hover-bg:             lighten($light, 10%);
   --input-focus-bg:             white;
   --input-focus-border:         transparent;

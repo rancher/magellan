@@ -21,9 +21,9 @@ export default Mixin.create({
 
         if ( resource.namespaced ) {
           namespace = obj && obj.metadata && obj.metadata.namespace || 'default';
-          url = resource.namespacedUrl(namespace);
+          url = resource.listUrl(namespace);
         } else {
-          url = resource.baseUrl();
+          url = resource.listUrl();
         }
 
         const out = await get(this, 'fetch').request(url, {

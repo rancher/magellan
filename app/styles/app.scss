@@ -14,8 +14,18 @@ $lg-padding: 18px 30px;
 @import "themes/light";
 @import "themes/dark";
 
-@import "ember-shared/components/input-yaml";
+@import "ember-shared/components/badge";
 @import "ember-shared/components/button";
+@import "ember-shared/components/dropdown";
+@import "ember-shared/components/form";
+@import "ember-shared/components/grid";
+@import "ember-shared/components/growl";
+@import "ember-shared/components/input-yaml";
+@import "ember-shared/components/loading";
+@import "ember-shared/components/modal";
+@import "ember-shared/components/progress";
+@import "ember-shared/components/sortable-table";
+@import "ember-shared/components/tooltip";
 
 /*
 HTML {
@@ -36,9 +46,11 @@ BODY {
   margin: 0;
   padding: 0;
   position: relative;
+  background: var(--body-bg);
+  color: var(--body-text);
 }
 
-A {
+A, A:hover, A:active, A:visited {
   text-decoration: underline;
 }
 
@@ -109,7 +121,7 @@ NAV {
 
   &.grouped UL {
    border: 1px solid var(--link-text);
-   background-color: var(--light);
+   background-color: var(--body-bg);
  }
 }
 
@@ -210,4 +222,8 @@ HEADER {
   &:not(:first-child) {
     margin-top: 0;
   }
+}
+
+.faded {
+  opacity: 0.4;
 }

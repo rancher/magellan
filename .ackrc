@@ -1,0 +1,11 @@
+--ignore-dir=.git
+--ignore-dir=assets
+--ignore-dir=bower_components
+--ignore-dir=coverage
+--ignore-dir=dist
+--ignore-dir=node_modules
+--ignore-dir=tests
+--ignore-dir=tmp
+--ignore-dir=tmp
+--ignore-dir=vendor
+--ignore-file=is:yarn.lock

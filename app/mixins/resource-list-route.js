@@ -18,21 +18,55 @@ export default Mixin.create({
     let isAllNamespaces = null;
     let url;
 
-    if ( isNamespaced ) {
-      const namespace = get(this, 'namespaces.current');
+    const namespace = get(this, 'namespaces.current');
+    isAllNamespaces = isNamespaced && !namespace;
+    url = resource.listUrl(namespace)
 
-      if ( namespace ) {
-        isAllNamespaces = false;
-        url = resource.namespacedPath.replace('%NAMESPACE%', escape(namespace));
-      } else {
-        isAllNamespaces = true;
-        url = resource.basePath;
+    const opt = {
+      headers: {
+        'accept': 'application/json;as=Table;g=meta.k8s.io;v=v1beta1',
       }
-    } else {
-      url = resource.basePath;
-    }
+    };
 
-    const res = await fetch.request(url)
+    let res;
+    try {
+      res = await fetch.request(url, opt)
+      res = get(this, 'store').createRecord('table', res);
+    } catch (e) {
+      delete opt.headers.accept;
+      const objects = await fetch.request(url, opt)
+
+      let hasCreated = false;
+
+      const rows = objects.items.map((x) => {
+        const out = {
+          cells: [
+            x.metadata.name,
+          ],
+          object: { metadata: x.metadata }
+        };
+
+        if ( x.metadata.creationTimestamp ) {
+          out.cells.push(x.metadata.creationTimestamp);
+          hasCreated = true;
+        }
+
+        return out;
+      });
+
+      const columnDefinitions = [
+        {name: "Name", type: "string", format: "name"},
+      ];
+
+      if ( hasCreated ) {
+        columnDefinitions.push({name: "Created", type: "string", format: "string"});
+      }
+
+      res = get(this, 'store').createRecord('table', {
+        columnDefinitions,
+        rows
+      });
+    }
 
     return {
       resource,

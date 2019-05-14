@@ -1,5 +1,19 @@
 generic:
+  actions: Actions
   cancel: Cancel
+  namespaceGroup: 'Namespace: {name}'
+  search: Search
+  secondsAgo: |
+    {seconds, plural,
+    =0 {Just now}
+    =1 {A second ago}
+    other {# seconds ago}}
+  select: Select
+
+action:
+  clone: Clone
+  delete: Delete
+  edit: Edit
 
 asyncButton:
   create:
@@ -22,3 +36,12 @@ copyToClipboard:
     normal: Copy to clipboard
     success: Copied!
     error: Error!
+
+resourceList:
+  noMatch: No resources match the current search
+  noRows: There are no resources to show
+  pagination: |
+    {pages, plural,
+    =0 {No resources}
+    =1 {{count} {count, plural, =1 {resource} other {resources}}}
+    other {{from} - {to} of {count} resources}}

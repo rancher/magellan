@@ -1,16 +1,5 @@
 <nav class="left {{if (eq navGroup "group") "grouped"}}">
   <div class="logo"/>
-  <p class="text-center">
-    {{#if (eq navGroup "group")}}
-      <a href="#" {{action "setNavGroup" "none"}}>By Name</a>
-      &nbsp;|&nbsp;
-      <b>By API Group</b>
-    {{else}}
-      <b>By Name</b>
-      &nbsp;|&nbsp;
-      <a href="#" {{action "setNavGroup" "group"}}>By API Group</a>
-    {{/if}}
-  </p>
 
   {{#if favorites.length}}
     <label><i class="icon icon-star-fill"/> Favorites</label>
@@ -51,6 +40,29 @@
       {{/each}}
     </ul>
   {{/if}}
+
+  <p class="text-center">
+    {{#if (eq navGroup "group")}}
+      <a href="#" {{action "setNavGroup" "none"}}>By Name</a>
+      &nbsp;|&nbsp;
+      <b>By API Group</b>
+    {{else}}
+      <b>By Name</b>
+      &nbsp;|&nbsp;
+      <a href="#" {{action "setNavGroup" "group"}}>By API Group</a>
+    {{/if}}
+  </p>
+  <p class="text-center">
+    {{#if (eq themeSvc.current "dark")}}
+      <a href="#" {{action "setTheme" "light"}}>Light</a>
+      &nbsp;|&nbsp;
+      <b>Dark</b>
+    {{else}}
+      <b>Light</b>
+      &nbsp;|&nbsp;
+      <a href="#" {{action "setTheme" "dark"}}>Dark</a>
+    {{/if}}
+  </p>
 </nav>
 
 <div class="right">

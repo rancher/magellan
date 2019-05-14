@@ -48,10 +48,16 @@ export default Route.extend(ApplicationLoading, ApplicationError, {
             return;
           }
 
-          res.basePath = `${ paths[group] }/${ res.name }`
+          res.basePath     = `${ paths[group] }/${ res.name }`
+          res.resourcePath = `${ paths[group] }/${ res.name }/{name}`;
+          res.listPath     = res.basePath;
+
           if ( res.namespaced ) {
-            res.namespacedPath = `${ paths[group] }/namespaces/%NAMESPACE%/${ res.name }`;
+            res.namespacedPath = `${ paths[group] }/namespaces/{namespace}/${ res.name }`;
+            res.resourcePath   = `${ res.namespacedPath }/{name}`;
+            res.listPath       = res.namespacedPath;
           }
+
           res.group = group;
           res.groupVersion = versions[group];
           resources.push(store.createRecord('resource', res));
