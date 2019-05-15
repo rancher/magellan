@@ -1,6 +1,4 @@
-import Route from '@ember/routing/route';
-import ResourceListRoute from 'magellan/mixins/resource-list-route';
+import Controller from '@ember/controller'
+import ResourceListController from 'magellan/mixins/resource-list-controller';
 
-export default Route.extend(ResourceListRoute, {
-  versionRoute: 'authed.apis',
-});
+export default Controller.extend(ResourceListController);

@@ -2,7 +2,7 @@
   resource=resource
   isNamespaced=isNamespaced
 }}
-<main>
+<main class={{if (eq line "clip") "yes-clip"}}>
   {{#sortable-table
     classNames="grid sortable-table"
     body=body.rowObjects
@@ -26,9 +26,9 @@
         {{check-box nodeId=inst.Id}}
       </td>
       {{#each headers as |h|}}
-        <td data-title={{get dt h.name}}>
+        <td class="maybe-clip" data-title={{get dt h.name}}>
           {{#if h.linkResource}}
-            <a href={{inst.SelfLink}}>{{get inst h.name}}</a>
+            <a href={{inst.selfLink}}>{{get inst h.name}}</a>
           {{else if h.linkNamespace}}
             <a href="#" {{action "switchNamespace" (get inst h.name)}}>{{get inst h.name}}</a>
           {{else if h.component}}
@@ -51,10 +51,14 @@
         </td>
       </tr>
     {{else if (eq kind "right-actions")}}
+        <div class="btn-group icon-group mr-20">
+          <button {{action "setLine" "clip"}} class="btn bg-transparent {{if (eq line "clip") "active"}}"><i class="icon icon-line-clip"/></button>
+          <button {{action "setLine" "wrap"}} class="btn bg-transparent {{if (eq line "wrap") "active"}}"><i class="icon icon-line-wrap"/></button>
+        </div>
       {{#if isNamespaced}}
         <div class="btn-group icon-group">
           <button {{action "setGroup" "none"}} class="btn bg-transparent {{if (eq group "none") "active"}}"><i class="icon icon-list-flat"/></button>
-          <button {{action "setGroup" "namespace"}} class="btn bg-transparent {{if (eq group "namespace") "active"}}"><i class="icon icon-list-grouped"/></button>
+          <button {{action "setGroup" "namespace"}} class="btn bg-transparent {{if (eq group "namespace") "active"}}"><i class="icon icon-folder"/></button>
         </div>
       {{/if}}
     {{else if (eq kind "no-match")}}

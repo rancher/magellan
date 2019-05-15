@@ -18,7 +18,7 @@ const Table = Base.extend({
       entry.Id = row.object.metadata.uid;
       entry.Namespace = row.object.metadata.namespace;
       entry.Created = row.object.metadata.creationTimestamp;
-      entry.SelfLink = row.object.metadata.selfLink;
+      entry.selfLink = row.object.metadata.selfLink;
       entry._availableActions = get(this, '_availableActions');
 
       list.push(entry);

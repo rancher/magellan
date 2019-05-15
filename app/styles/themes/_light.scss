@@ -83,9 +83,12 @@ $selected: rgba($primary, .5);
   --input-disabled-placeholder: darken($medium, 10%);
 
   --modal-overlay-bg:           rgba(#000, 0.75);
+  --modal-bg:                   white;
+  --modal-border:               transparent;
+  --modal-shadow:               #555;
 
-  --progress-bg: #{$medium};
-  --progress-divider: #{$medium};
+  --progress-bg:                #{$medium};
+  --progress-divider:           #{$medium};
 
   --sortable-table-bg:          transparent;
   --sortable-table-header-bg:   #eef;

@@ -13,6 +13,8 @@ export default Component.extend({
   create:     null,
   edit:       null,
 
+  editBody: null,
+
   resource:          alias('model.resource'),
   isAllNamespaces:   alias('model.isAllNamespaces'),
   isNamespaced:      alias('model.isNamespaced'),
@@ -20,12 +22,9 @@ export default Component.extend({
   parsed:            alias('model.parsed'),
   body:              alias('model.body'),
 
-  editBody: null,
-
   didReceiveAttrs() {
     this._super(...arguments);
     set(this, 'editBody', get(this, 'body'));
-
   },
 
   didInsertElement() {
@@ -34,10 +33,6 @@ export default Component.extend({
 
     cm.execCommand('foldAll');
   },
-
-  view: computed('create', 'edit', function() {
-    return !get(this, 'create') && !get(this, 'edit');
-  }),
 
   actions: {
     reload() {
@@ -58,11 +53,11 @@ export default Component.extend({
         let url, namespace;
         const resource = get(this, 'resource');
 
-        // Strip out all teh comments
-        const body = get(this, 'body')
+        // Strip out all the comments
+        const body = get(this, 'editBody')
           .split(/\n/)
           .filter((x) => !x.startsWith('#'))
-          .replace(/\s*#.*$/, '')
+          .replace(/\s*#.*$/g, '')
           .join('\n');
         const obj = safeLoad(body);
 
@@ -84,7 +79,8 @@ export default Component.extend({
         cb(true);
         get(this, 'router').transitionTo(out.metadata.selfLink);
       } catch (e) {
-        debugger;
+        window.scrollTo(0, 0);
+        set(this, 'errors', [e.message.message || e]);
         cb(false);
       }
     },
@@ -94,7 +90,7 @@ export default Component.extend({
       const url = get(this, 'parsed.metadata.selfLink');
 
       try {
-        const out = await get(this, 'fetch').request(url, {
+        await get(this, 'fetch').request(url, {
           body,
           method:  'PUT',
           headers: {
@@ -107,14 +103,20 @@ export default Component.extend({
         set(this, 'edit', false);
         this.send('reload');
       } catch (e) {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         set(this, 'errors', [e.message.message || e]);
         cb(false);
       }
     },
 
     async delete() {
-      debugger;
+      get(this, 'resource').send('promptDelete', get(this, 'parsed'), function() {
+        get(this, 'router').goToParent();
+      });
     }
   },
+
+  view: computed('create', 'edit', function() {
+    return !get(this, 'create') && !get(this, 'edit');
+  }),
 });

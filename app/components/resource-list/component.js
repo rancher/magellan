@@ -6,6 +6,9 @@ import { alias, and } from '@ember/object/computed';
 const BY_NONE = 'none';
 const BY_NAMESPACE = 'namespace';
 
+const WRAP = 'wrap';
+const CLIP = 'clip';
+
 export default Component.extend({
   namespaces: service(),
 
@@ -17,6 +20,7 @@ export default Component.extend({
   sortBy:           'name',
   descending:       false,
   group:            BY_NAMESPACE,
+  line:             WRAP,
 
   tagName: '',
 
@@ -29,6 +33,10 @@ export default Component.extend({
       if ( key === 'namespace' ) {
         this.send('switchNamespace', '');
       }
+    },
+
+    setLine(key) {
+      set(this, 'line', key);
     },
 
     switchNamespace(name) {

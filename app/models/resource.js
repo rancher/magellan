@@ -3,8 +3,10 @@ import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 const Resource = Base.extend({
-  definitions: service(),
-  router:      service(),
+  definitions:  service(),
+  fetch:        service(),
+  router:       service(),
+  modalService: service('modal'),
 
   basePath:       null,
   namespacedPath: null,
@@ -15,10 +17,10 @@ const Resource = Base.extend({
   canGet:    canVerb('get'),
 
   actions: {
-    promptDelete() {
-      get(this, 'modalService').toggleModal('confirm-delete', {
-        escToClose: true,
-        resources:  [this]
+    promptDelete(model, after) {
+      get(this, 'modalService').show('confirm-delete', {
+        resources:  [model],
+        after,
       });
     },
 
@@ -27,11 +29,16 @@ const Resource = Base.extend({
     },
 
     edit(model) {
-      get(this, 'router').transitionTo(model.SelfLink + '?edit=true');
+      get(this, 'router').transitionTo(model.selfLink + '?edit=true');
     },
 
-    delete() {
-      debugger;
+    async delete(model) {
+      await get(this, 'fetch').request(model.metadata.selfLink, {
+        method:  'DELETE',
+        headers: {
+          'content-type': 'application/yaml',
+        }
+      });
     },
   },
 
