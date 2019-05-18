@@ -73,7 +73,7 @@ export default Base.extend({
     const gvk = ( get(this, 'x-kubernetes-group-version-kind') || [])[0];
 
     if ( depth === 0 && gvk ) {
-      const apiVersion = `${ gvk.group }/${ gvk.version }`;
+      const apiVersion = (gvk.group ? `${ gvk.group }/${ gvk.version }` : gvk.version);
       const kind = gvk.kind;
 
       data.apiVersion = apiVersion;

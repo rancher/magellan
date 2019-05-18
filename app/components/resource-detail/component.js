@@ -43,6 +43,10 @@ export default Component.extend({
       set(this, 'edit', true);
     },
 
+    cancel() {
+       get(this, 'router').goToPrevious();
+    },
+
     cancelEdit() {
       set(this, 'editBody', get(this, 'body'));
       set(this, 'edit', false);
@@ -110,7 +114,7 @@ export default Component.extend({
     },
 
     async delete() {
-      get(this, 'resource').send('promptDelete', get(this, 'parsed'), function() {
+      get(this, 'resource').send('promptDelete', get(this, 'parsed'), () => {
         get(this, 'router').goToParent();
       });
     }

@@ -13,7 +13,7 @@
   </section>
 {{/if}}
 
-<main class={{if view 'code-view' 'code-edit'}}>
+<main class={{if view "code-view" "code-edit"}}>
   {{#input-yaml
     value=editBody
     showUpload=false
@@ -32,7 +32,7 @@
       {{action-cancel
         mode=(if create "create" "save")
         action=(action (if create "create" "save"))
-        cancel=(action (if create "create" "cancelEdit"))
+        cancel=(action (if create "cancel" "cancelEdit"))
         compact=true
         classNames="pb-10"
       }}
@@ -43,7 +43,7 @@
     {{action-cancel
       mode=(if create "create" "save")
       action=(action (if create "create" "save"))
-      cancel=(action (if create "create" "cancelEdit"))
+      cancel=(action (if create "cancel" "cancelEdit"))
     }}
   {{/unless}}
 </main>

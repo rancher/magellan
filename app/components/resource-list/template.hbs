@@ -2,9 +2,10 @@
   resource=resource
   isNamespaced=isNamespaced
 }}
-<main class={{if (eq line "clip") "yes-clip"}}>
+<main class="p-0 {{if (eq line "clip") "yes-clip"}}">
   {{#sortable-table
     classNames="grid sortable-table"
+    scrollElement="BODY > DIV > .right"
     body=body.rowObjects
     searchText=searchText
     sortBy=sortBy

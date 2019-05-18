@@ -60,13 +60,17 @@ BODY>.ember-view {
   display: grid;
   grid-template-areas: "left right";
   grid-template-columns: 250px auto;
+  grid-template-rows: 100vh;
 
-  .left {
+  > .left {
     grid-area: left;
+    overflow-y: auto;
   }
 
-  .right {
+  > .right {
     grid-area: right;
+    overflow: auto;
+    padding: 10px;
   }
 }
 
@@ -131,9 +135,10 @@ MAIN {
 
 HEADER {
   display: grid;
-  grid-template-areas: "left middle right";
-  grid-template-columns: auto auto auto;
-  grid-template-rows: 70px;
+  grid-template-areas: "left right";
+  grid-template-columns: auto 150px;
+  grid-template-rows: 50px;
+  margin-bottom: 10px;
 
   background-color: var(--header-bg);
   color: var(--dark-contrast);
@@ -141,11 +146,29 @@ HEADER {
   .left {
     grid-area: left;
     padding: 10px;
-  }
 
-  .middle {
-    grid-area: middle;
-    padding: 10px;
+    H2 {
+      display: inline-block;
+      position: relative;
+      padding: 10px 0 0 20px;
+      min-width: 75px;
+
+      &.api {
+        padding-left: 0;
+      }
+
+      > LABEL {
+        position: absolute;
+        top: -6px;
+        font-size: 12px;
+      }
+
+      > SELECT {
+        display: inline-block;
+        width: auto;
+        height: 22px;
+      }
+    }
   }
 
   .right {
@@ -226,4 +249,15 @@ HEADER {
 
 .faded {
   opacity: 0.4;
+}
+
+.icon {
+  vertical-align: initial;
+}
+
+.create-btn {
+  font-size: 16px;
+  position: relative;
+  top: -5px;
+  padding: 10px 20px !important;
 }

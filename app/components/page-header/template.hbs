@@ -1,26 +1,42 @@
 <header>
   <div class="left">
-    <h2>{{resource.group}}/{{resource.groupVersion}}</h2>
-    <h1><a href={{resource.basePath}}>{{resource.kind}}</a> {{#if parsed.metadata.name}}: {{parsed.metadata.name}}{{/if}}</h1>
-  </div>
-  <div class="middle">
-    <h2>Namespace</h2>
-    {{#if overrideNamespace}}
-      <span class="text-muted">{{overrideNamespace}}</span>
-    {{else if isNamespaced}}
-      <select onchange={{action "switchNamespace" value="target.value"}}>
-        <option disabled>Select a Namespace...</option>
-        <option value="">(All)</option>
-        <option disabled>——————————</option>
-        {{#each namespaces.all as |ns|}}
-          <option value={{ns.metadata.name}} selected={{eq ns.metadata.name namespaces.current}}>{{ns.metadata.name}}</option>
-        {{/each}}
-      </select>
-    {{else}}
-      <span class="text-muted">(Not namespaced)</span>
+    <h2 class="api">
+      <label>{{t "pageHeader.label.api"}}</label>
+      {{resource.group}}/{{resource.groupVersion}}
+    </h2>
+
+    <h2>
+      <label>{{t "pageHeader.label.namespace"}}</label>
+      {{#if overrideNamespace}}
+        {{overrideNamespace}}
+      {{else if isNamespaced}}
+        <select onchange={{action "switchNamespace" value="target.value"}}>
+          <option disabled>Select a Namespace...</option>
+          <option value="">(All)</option>
+          <option disabled>——————————</option>
+          {{#each namespaces.all as |ns|}}
+            <option value={{ns.metadata.name}} selected={{eq ns.metadata.name namespaces.current}}>{{ns.metadata.name}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        {{t "generic.na"}}
+      {{/if}}
+    </h2>
+
+    <h2>
+      <label>{{t "pageHeader.label.resource"}}</label>
+      <a href={{resource.basePath}}>{{resource.kind}}</a>
+    </h2>
+
+    {{#if parsed.metadata.name}}
+      <h2>
+        <label>{{t "pageHeader.label.name"}}</label>
+        {{parsed.metadata.name}}
+      </h2>
     {{/if}}
   </div>
   <div class="right">
-    <button class="btn bg-primary btn-lg p-10" style="margin-top: 3px;" disabled={{not resource.canCreate}} {{action "create"}}>Create</button>
+    <button class="btn bg-primary create-btn p-10" disabled={{not resource.canCreate}} {{action "create"}}>Create</button>
   </div>
 </header>
+{{yield}}

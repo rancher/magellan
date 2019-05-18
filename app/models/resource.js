@@ -16,32 +16,6 @@ const Resource = Base.extend({
   canList:   canVerb('list'),
   canGet:    canVerb('get'),
 
-  actions: {
-    promptDelete(model, after) {
-      get(this, 'modalService').show('confirm-delete', {
-        resources:  [model],
-        after,
-      });
-    },
-
-    clone() {
-      debugger;
-    },
-
-    edit(model) {
-      get(this, 'router').transitionTo(model.selfLink + '?edit=true');
-    },
-
-    async delete(model) {
-      await get(this, 'fetch').request(model.metadata.selfLink, {
-        method:  'DELETE',
-        headers: {
-          'content-type': 'application/yaml',
-        }
-      });
-    },
-  },
-
   definitionKey: computed('apiVersion', 'kind', function() {
     // io.k8s.api.apps.v1.Deployment
     // io.k8s.api.core.v1.Node
@@ -62,6 +36,36 @@ const Resource = Base.extend({
 
     return `${ group }/${ version }`;
   }),
+
+  actions: {
+    promptDelete(model, after) {
+      get(this, 'modalService').show('confirm-delete', {
+        resources:  [model],
+        after,
+      });
+    },
+
+    async clone(model) {
+      let url = this.resourceUrl(model.Namespace, '_create');
+
+      url += `?clone=${ model.Name }`;
+
+      get(this, 'router').transitionTo(url);
+    },
+
+    edit(model) {
+      get(this, 'router').transitionTo(`${ model.selfLink }?edit=true`);
+    },
+
+    async delete(model) {
+      await get(this, 'fetch').request(model.metadata.selfLink, {
+        method:  'DELETE',
+        headers: {
+          'content-type': 'application/yaml',
+        }
+      });
+    },
+  },
 
   baseUrl() {
     return get(this, 'basePath');

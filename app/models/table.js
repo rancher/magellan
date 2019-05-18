@@ -46,6 +46,7 @@ const Table = Base.extend({
         break;
       case 'Created':
         out.component = 'live-date';
+        out.width = 100;
         break;
       }
 
@@ -59,8 +60,8 @@ const Table = Base.extend({
     const out = get(this, 'headers').slice();
 
     out.insertAt(1, {
-      name:         'Namespace',
-      sort:         'Namespace',
+      name:          'Namespace',
+      sort:          'Namespace',
       linkNamespace: true,
     });
 

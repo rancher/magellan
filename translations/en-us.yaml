@@ -2,6 +2,7 @@ generic:
   actions: Actions
   cancel: Cancel
   namespaceGroup: 'Namespace: {name}'
+  na: N/A
   search: Search
   secondsAgo: |
     {seconds, plural,
@@ -26,6 +27,11 @@ asyncButton:
     waiting: Saving&hellip;
     success: Saved
     error: Error
+  delete:
+    action: Delete
+    waiting: Deleting&hellip;
+    success: Deleted
+    error: Error
 
 inputYaml:
   download: Export to file
@@ -37,6 +43,13 @@ copyToClipboard:
     success: Copied!
     error: Error!
 
+pageHeader:
+  label:
+    api: API
+    namespace: Namespace
+    resource: Resource
+    name: Name
+
 resourceList:
   noMatch: No resources match the current search
   noRows: There are no resources to show
@@ -45,3 +58,6 @@ resourceList:
     =0 {No resources}
     =1 {{count} {count, plural, =1 {resource} other {resources}}}
     other {{from} - {to} of {count} resources}}
+
+home:
+  detail: Choose a resource on the left

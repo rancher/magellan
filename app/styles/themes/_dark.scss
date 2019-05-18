@@ -56,7 +56,10 @@
   --input-focus-bg:     #{$darkest};
   --input-focus-border: #{$lighter};
 
-  --modal-overlay-bg:           rgba(#000, 0.75);
+  --modal-bg:           #{$darker};
+  --modal-border:       #{$medium};
+  --modal-shadow:       rgba(0, 0, 0, 0.5);
+  --modal-overlay-bg:   rgba(0, 0, 0, 0.75);
 
   --progress-bg: #{$medium};
   --progress-divider: #{$lightest};

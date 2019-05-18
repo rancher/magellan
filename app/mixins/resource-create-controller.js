@@ -7,6 +7,9 @@ export default Mixin.create({
   fetch:  service(),
   router: service(),
 
+  queryParams: ['clone'],
+  clone:       null,
+
   actions: {
     async save(cb) {
       try {
