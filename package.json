@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@rancher/ember-cookies": "^0.4.0",
-    "@rancher/ember-shared": "0.0.4",
+    "@rancher/ember-shared": "0.0.6",
     "@rancher/ivy-codemirror": "2.1.4",
     "@xg-wang/whatwg-fetch": "^3.0.0",
     "buffer": "^5.2.1",
