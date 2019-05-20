@@ -19,6 +19,7 @@ export default Mixin.create({
     let url;
 
     const namespace = get(this, 'namespaces.current');
+
     isAllNamespaces = isNamespaced && !namespace;
     url = resource.listUrl(namespace)
 
@@ -29,6 +30,7 @@ export default Mixin.create({
     };
 
     let res;
+
     try {
       res = await fetch.request(url, opt)
       res = get(this, 'store').createRecord('table', res);
@@ -55,11 +57,19 @@ export default Mixin.create({
       });
 
       const columnDefinitions = [
-        {name: "Name", type: "string", format: "name"},
+        {
+          name:   'Name',
+          type:   'string',
+          format: 'name'
+        },
       ];
 
       if ( hasCreated ) {
-        columnDefinitions.push({name: "Created", type: "string", format: "string"});
+        columnDefinitions.push({
+          name:   'Created',
+          type:   'string',
+          format: 'string'
+        });
       }
 
       res = get(this, 'store').createRecord('table', {

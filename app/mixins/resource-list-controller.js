@@ -1,6 +1,4 @@
 import Mixin from '@ember/object/mixin';
-import { get, computed } from '@ember/object';
-import { alias } from '@ember/object/computed';
 
 export default Mixin.create({
   queryParams: {

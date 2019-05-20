@@ -21,16 +21,17 @@ export default Mixin.create({
     if ( isNamespaced ) {
       const namespacedModel = this.modelFor(get(this, 'namespacedRoute'));
       const namespace = namespacedModel.namespace;
+
       url = resource.resourceUrl(namespace, params.name);
     } else {
-      url = resource.resourceUrl(null, params.name);;
+      url = resource.resourceUrl(null, params.name);
     }
 
     const body = await fetch.request(url, {
       headers: {
         'accept': 'application/yaml',
       }
-    });
+    })
 
     const parsed = safeLoad(body);
 
@@ -40,7 +41,7 @@ export default Mixin.create({
       body,
       originalBody: body,
       parsed,
-    };
+    }
   },
 
   actions: {

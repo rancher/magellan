@@ -11,27 +11,6 @@ export default EmberObject.extend(Ember.ActionHandler, {
   canDelete:     true,
   canBulkDelete: alias('canDelete'),
 
-  actions: {
-    promptDelete() {
-      get(this, 'modalService').toggleModal('confirm-delete', {
-        escToClose: true,
-        resources:  [this]
-      });
-    },
-
-    clone() {
-      debugger;
-    },
-
-    edit() {
-      debugger;
-    },
-
-    delete() {
-      debugger; 
-    },
-  },
-
   availableActions: computed(() => {
     /*
       For custom actions not in _availableActions below, Override me and return [
@@ -97,4 +76,26 @@ export default EmberObject.extend(Ember.ActionHandler, {
 
     return out.sortBy('sort');
   }),
+
+  actions: {
+    promptDelete() {
+      get(this, 'modalService').toggleModal('confirm-delete', {
+        escToClose: true,
+        resources:  [this]
+      });
+    },
+
+    clone() {
+      console.log('@TODO');
+    },
+
+    edit() {
+      console.log('@TODO');
+    },
+
+    delete() {
+      console.log('@TODO');
+    },
+  },
+
 });

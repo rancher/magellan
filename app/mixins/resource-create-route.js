@@ -7,7 +7,7 @@ export default Mixin.create({
   definitions: service(),
   namespaces:  service(),
 
-  model(arams) {
+  model(/* params */) {
     const parentModel = this.modelFor(get(this, 'resourceListRoute'));
     const resource = parentModel.resource;
     const isNamespaced = parentModel.isNamespaced;

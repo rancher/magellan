@@ -7,7 +7,7 @@ export default Component.extend({
 
   namespaces: service(),
 
-  tagName: 'LI',
+  tagName:    'LI',
   classNames: ['clip'],
 
   resource: null,

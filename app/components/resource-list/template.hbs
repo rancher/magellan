@@ -22,27 +22,27 @@
     as |sortable kind inst dt|
   }}
     {{#if (eq kind "row")}}
-    <tr class="main-row">
-      <td class="check" valign="middle" data-title={{dt.check}}>
-        {{check-box nodeId=inst.Id}}
-      </td>
-      {{#each headers as |h|}}
-        <td class="maybe-clip" data-title={{get dt h.name}}>
-          {{#if h.linkResource}}
-            <a href={{inst.selfLink}}>{{get inst h.name}}</a>
-          {{else if h.linkNamespace}}
-            <a href="#" {{action "switchNamespace" (get inst h.name)}}>{{get inst h.name}}</a>
-          {{else if h.component}}
-            {{component h.component value=(get inst h.name)}}
-          {{else}}
-            {{get inst h.name}}
-          {{/if}}
+      <tr class="main-row">
+        <td class="check" valign="middle" data-title={{dt.check}}>
+          {{check-box nodeId=inst.Id}}
         </td>
-      {{/each}}
-      <td data-title={{dt.actions}} class="actions">
-        {{action-menu model=inst context=resource}}
-      </td>
-    </tr>
+        {{#each headers as |h|}}
+          <td class="maybe-clip" data-title={{get dt h.name}}>
+            {{#if h.linkResource}}
+              <a href={{inst.selfLink}}>{{get inst h.name}}</a>
+            {{else if h.linkNamespace}}
+              <a href="#" {{action "switchNamespace" (get inst h.name)}}>{{get inst h.name}}</a>
+            {{else if h.component}}
+              {{component h.component value=(get inst h.name)}}
+            {{else}}
+              {{get inst h.name}}
+            {{/if}}
+          </td>
+        {{/each}}
+        <td data-title={{dt.actions}} class="actions">
+          {{action-menu model=inst context=resource}}
+        </td>
+      </tr>
     {{else if (eq kind "group")}}
       <tr class="group-row">
         <td colspan={{sortable.fullColspan}}>
@@ -52,10 +52,10 @@
         </td>
       </tr>
     {{else if (eq kind "right-actions")}}
-        <div class="btn-group icon-group mr-20">
-          <button {{action "setLine" "clip"}} class="btn bg-transparent {{if (eq line "clip") "active"}}"><i class="icon icon-line-clip"/></button>
-          <button {{action "setLine" "wrap"}} class="btn bg-transparent {{if (eq line "wrap") "active"}}"><i class="icon icon-line-wrap"/></button>
-        </div>
+      <div class="btn-group icon-group mr-20">
+        <button {{action "setLine" "clip"}} class="btn bg-transparent {{if (eq line "clip") "active"}}"><i class="icon icon-line-clip"/></button>
+        <button {{action "setLine" "wrap"}} class="btn bg-transparent {{if (eq line "wrap") "active"}}"><i class="icon icon-line-wrap"/></button>
+      </div>
       {{#if isNamespaced}}
         <div class="btn-group icon-group">
           <button {{action "setGroup" "none"}} class="btn bg-transparent {{if (eq group "none") "active"}}"><i class="icon icon-list-flat"/></button>

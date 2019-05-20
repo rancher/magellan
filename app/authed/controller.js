@@ -9,7 +9,7 @@ export default Controller.extend({
   namespaces: service(),
   themeSvc:   service('theme'),
 
-  navGroup: null,
+  navGroup:      null,
   favoriteNames: null,
 
   init() {
@@ -47,12 +47,13 @@ export default Controller.extend({
     }
   },
 
-  favorites: computed('favoriteNames.[]','model.resources.[]', function() {
+  favorites: computed('favoriteNames.[]', 'model.resources.[]', function() {
     const resources = get(this, 'model.resources');
     const out = [];
 
     get(this, 'favoriteNames').forEach((uniqueName) => {
       const r = resources.findBy('uniqueName', uniqueName);
+
       if ( r ) {
         out.push(r);
       }

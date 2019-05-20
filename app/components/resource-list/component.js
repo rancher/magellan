@@ -7,7 +7,7 @@ const BY_NONE = 'none';
 const BY_NAMESPACE = 'namespace';
 
 const WRAP = 'wrap';
-const CLIP = 'clip';
+// const CLIP = 'clip';
 
 export default Component.extend({
   namespaces: service(),
@@ -25,6 +25,7 @@ export default Component.extend({
   tagName: '',
 
   showNamespace: and('isAllNamespaces', 'isNamespaced'),
+  groupByRef:    alias('groupByKey'),
 
   actions: {
     setGroup(key) {
@@ -67,6 +68,4 @@ export default Component.extend({
 
     return null;
   }),
-
-  groupByRef: alias('groupByKey'),
 });

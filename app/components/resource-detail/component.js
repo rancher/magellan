@@ -44,7 +44,7 @@ export default Component.extend({
     },
 
     cancel() {
-       get(this, 'router').goToPrevious();
+      get(this, 'router').goToPrevious();
     },
 
     cancelEdit() {
