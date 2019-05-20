@@ -7,7 +7,7 @@
       {{#each favorites as |r|}}
         {{#link-to-resource-list resource=r as |block|}}
           {{~#if (eq block "after-outside") ~}}
-            <i class="icon icon-star-fill remove-favorite" {{action "removeFavorite" r.uniqueName}} />
+            <a href="#" class="remove-favorite" {{action "removeFavorite" r.uniqueName}}><i class="icon icon-star-fill" /></a>
           {{~/if~}}
         {{/link-to-resource-list}}
       {{/each}}
@@ -21,7 +21,7 @@
         {{#each g.resources as |r|}}
           {{#link-to-resource-list resource=r as |block|}}
             {{~#if (eq block "after-outside") ~}}
-              <i class="icon icon-star-open add-favorite" {{action "addFavorite" r.uniqueName}} />
+              <a href="#" class="add-favorite" {{action "addFavorite" r.uniqueName}}><i class="icon icon-star-open" /></a>
             {{~/if~}}
           {{/link-to-resource-list}}
         {{/each}}
@@ -32,7 +32,7 @@
       {{#each flat as |f|}}
         {{#link-to-resource-list resource=f.resource as |block|}}
           {{~#if (eq block "after-outside") ~}}
-            <i class="icon icon-star-open add-favorite" {{action "addFavorite" r.uniqueName}} />
+            <a href="#" class="add-favorite" {{action "addFavorite" r.uniqueName}}><i class="icon icon-star-open" /></a>
           {{~else if (and f.duplicate (eq block "after-inside"))~}}
             <span class="text-muted"> ({{display-group f.resource.group}})</span>
           {{~/if~}}

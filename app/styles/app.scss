@@ -107,15 +107,19 @@ NAV {
     & > .add-favorite,
     & > .remove-favorite {
       display: none;
+      color: #a7ab2c;
+      opacity: 0.5;
+      vertical-align: top;
+
+      I {
+        cursor: pointer;
+        cursor: hand;
+      }
     }
 
     &:hover > .add-favorite,
     &:hover > .remove-favorite {
       display: inline;
-      color: #a7ab2c;
-      opacity: 0.5;
-      cursor: pointer;
-      vertical-align: top;
     }
 
     &.active {
