@@ -32,7 +32,7 @@ module.exports = function(environment) {
       version:               pkg.version,
       apiServer:             'https://localhost', // Where requests are proxied to
       apiEndpoint:           '/k8s',              // Only requests starting with this are proxied
-      apiPrefix:             '',                  // This will be added after the endpoint and before the path the user requests
+      apiPrefix:             '/k8s-api',                  // This will be added after the endpoint and before the path the user requests
       locales:               readLocales(),
       prefPrefix:            'm-',
     },
