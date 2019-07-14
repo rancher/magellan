@@ -35,6 +35,13 @@ You will need the following things properly installed on your computer.
 * `ember build` (development)
 * `ember build --environment production` (production)
 
+## Go binary
+
+After running ember build above
+
+* `go build` (development)
+* `go generate && go build -tags release` (production)
+
 ### Deploying
 
 Specify what it takes to deploy your app.
